@@ -8,7 +8,7 @@ export const G = 1
 export const B = 2
 export const A = 3
 
-export const { abs, ceil, cos, floor, max, min, pow, random, round, sign, sin, sqrt } = Math
+export const { abs, ceil, cos, floor, max, min, pow, random, round, sign, sin, sqrt, PI } = Math
 
 export function each(
     out: number[],

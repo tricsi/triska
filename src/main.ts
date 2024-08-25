@@ -30,14 +30,14 @@ schedule((delta) => {
         ROOT,
         (entity) => {
             animSystem(entity, delta)
-            bodySystem(entity, delta)
+            // bodySystem(entity, delta)
             transformSystem(entity)
             polygonSystem(entity)
             colorSystem(entity)
         },
         (entity) => {
             polygonRender(entity)
-            tilemapRender(entity)
+            // tilemapRender(entity)
             spriteRender(entity)
             textRender(entity)
         }

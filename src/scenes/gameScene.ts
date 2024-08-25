@@ -39,10 +39,10 @@ const gamePrefab: TEntityProps = [
                 ]
             },
             [
-                ["ico", { t: [[7, 7], [64, 64], 6], s: ICO, c: COLOR_BLACK }],
+                ["ico", { t: [[7, 7], [64, 64], 5], s: ICO, c: COLOR_BLACK }],
                 [
                     "txt",
-                    { t: [, [64, 132], 1.5], x: [FONT, "Four-leaf\nClover", 1, 1], c: COLOR_BLACK }
+                    { t: [, [64, 132]], x: [FONT, "Four-leaf\nClover", 1, 1], c: COLOR_BLACK }
                 ],
                 ["bg", { p: [[2, 2, 124, 156]], c: COLOR_WHITE }],
                 ["frame", { p: [[0, 0, 128, 160]], c: COLOR_GREY_3 }]

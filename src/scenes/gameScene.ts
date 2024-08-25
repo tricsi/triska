@@ -35,14 +35,14 @@ const gamePrefab: TEntityProps = [
             {
                 t: [
                     [64, 256],
-                    [0, 160]
+                    [0, 166]
                 ]
             },
             [
                 ["ico", { t: [[7, 7], [64, 64], 6], s: ICO, c: COLOR_BLACK }],
                 [
                     "txt",
-                    { t: [, [64, 120], 1.5], x: [FONT, "Four-leave\nclover", 1], c: COLOR_BLACK }
+                    { t: [, [64, 132], 1.5], x: [FONT, "Four-leaf\nClover", 1, 1], c: COLOR_BLACK }
                 ],
                 ["bg", { p: [[2, 2, 124, 156]], c: COLOR_WHITE }],
                 ["frame", { p: [[0, 0, 128, 160]], c: COLOR_GREY_3 }]
@@ -76,9 +76,9 @@ function setCard(icon: number) {
 async function animateCard(direction: number) {
     isAnimate = true
     const angle = (direction - 0.5) * PI
-    await timer(0.5, (t) => setRotate(card, t * t * angle))
+    await timer(0.4, (t) => setRotate(card, t * t * angle))
     setRotate(card, 0)
-    await timer(0.3, (t) => setAlpha(card, t * t))
+    await timer(0.2, (t) => setAlpha(card, t * t))
     isAnimate = false
 }
 

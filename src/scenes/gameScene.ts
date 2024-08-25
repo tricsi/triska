@@ -4,6 +4,7 @@ import {
     TEntity,
     TEntityProps,
     TEvent,
+    addChild,
     createEntity,
     getChild,
     on,
@@ -23,32 +24,24 @@ import {
     ICO
 } from "../config"
 import { createButton, isButtonActive } from "../prefabs/button"
+import { initHud } from "./hudScene"
 
 const gamePrefab: TEntityProps = [
     "game",
     ,
     [
-        ["no", { t: [, [-25, 100], 2] }, createButton(0, COLOR_RED)],
-        ["ok", { t: [, [25, 100], 2] }, createButton(1, COLOR_GREEN)],
-        [
-            "card",
-            {
-                t: [
-                    [64, 256],
-                    [0, 166]
-                ]
-            },
+        ["no", { t: [, [-15, 52]] }, createButton(0, COLOR_RED)],
+        ["ok", { t: [, [15, 52]] }, createButton(1, COLOR_GREEN)],
+        ["card", { t: [[33, 128], [0, 84]]}, [
+            ["ico", { t: [[7, 7], [32, 32], 3], s: ICO, c: COLOR_BLACK }],
             [
-                ["ico", { t: [[7, 7], [64, 64], 5], s: ICO, c: COLOR_BLACK }],
-                [
-                    "txt",
-                    { t: [, [64, 132]], x: [FONT, "Four-leaf\nClover", 1, 1], c: COLOR_BLACK }
-                ],
-                ["bg", { p: [[2, 2, 124, 156]], c: COLOR_WHITE }],
-                ["frame", { p: [[0, 0, 128, 160]], c: COLOR_GREY_3 }]
-            ]
-        ],
-        ["bg", { p: [[-72, -128, 144, 256]], c: COLOR_BLACK }]
+                "txt",
+                { t: [, [32, 68], 0.5], x: [FONT, "Four-leaf\nClover", 1, 1], c: COLOR_BLACK }
+            ],
+            ["bg", { p: [[1, 1, 64, 82]], c: COLOR_WHITE }],
+            ["frame", { p: [[0, 0, 66, 84]], c: COLOR_GREY_3 }]
+        ]],
+        ["bg", { p: [[-36, -64, 72, 128]], c: COLOR_BLACK }]
     ]
 ]
 
@@ -63,6 +56,7 @@ export function initGame() {
     on("up", onClick)
     on("down", onDown)
     gameScene = createEntity(gamePrefab)
+    addChild(gameScene, initHud(), 0)
     buttons = [getChild(gameScene, "no"), getChild(gameScene, "ok")]
     card = getChild(gameScene, "card")
     setCard(2)

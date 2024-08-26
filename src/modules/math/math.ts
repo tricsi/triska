@@ -46,6 +46,8 @@ export const reverse = (obj: number[], out: number[] = obj) => each(out, obj, (v
 export const hex = (value: string) =>
     new Float32Array(4).fill(1).map((v, i) => (value.length <= i ? v : parseInt(value[i], 16) / 15))
 
+export const irnd = (max: number, seed: number = 0) => rnd(max, seed, 1)
+
 export function rnd(max: number = 1, seed: number = 0, rounded: number = 0): number {
     if (max <= 0) {
         return max

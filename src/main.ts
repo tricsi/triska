@@ -12,7 +12,6 @@ import {
     renderContext,
     spriteRender,
     textRender,
-    tilemapRender,
     transformSystem,
     traverse,
     schedule,
@@ -30,14 +29,13 @@ schedule((delta) => {
         ROOT,
         (entity) => {
             animSystem(entity, delta)
-            // bodySystem(entity, delta)
+            bodySystem(entity, delta)
             transformSystem(entity)
             polygonSystem(entity)
             colorSystem(entity)
         },
         (entity) => {
             polygonRender(entity)
-            // tilemapRender(entity)
             spriteRender(entity)
             textRender(entity)
         }

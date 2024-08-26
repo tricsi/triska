@@ -12,8 +12,20 @@ export const COLOR_GREEN = [0, 1, 0]
 export const COLOR_DEBUG = [0, 1, 1, 0.5]
 
 export const CARDS: [number, string, () => number[][], number[]][] = [
-    [2, "You have found a\nFour-leaf Clover", () => [[-1,1,0,0],[1,-1,1,0]], COLOR_WHITE],
-    [6, "Black Cat", () => [[0,0,0,0],[0,0,0,0]], COLOR_BLACK],
-    [6, "White Cat", () => [[0,0,0,0],[0,0,0,0]], COLOR_WHITE],
-    [9, "Full Moon", () => [[0,0,0,0],[0,0,0,0]], COLOR_WHITE],
+    [2,  "a four-leaf clover", () => [[-1,1,0,0],[1,-1,1,0]], COLOR_WHITE],
+    [6,  "a black cat", () => [[0,0,0,0],[0,0,0,0]], COLOR_BLACK],
+    [7,  "a white rabbit", () => [[0,0,0,0],[0,0,0,0]], COLOR_WHITE],
+    [8,  "a toad", () => [[0,0,0,0],[0,0,0,0]], COLOR_WHITE],
+    [9,  "the full moon", () => [[0,1,0,-2],[0,1,0,1]], COLOR_WHITE],
+    [10, "the ace of spades", () => [[0,0,0,0],[0,0,0,0]], COLOR_BLACK],
+    [11, "the king of clubs", () => [[0,0,0,0],[0,0,0,0]], COLOR_BLACK],
+    [12, "the quuen of harts", () => [[0,0,0,0],[0,0,0,0]], COLOR_WHITE],
+    [13, "the jack of diamonds", () => [[0,0,0,0],[0,0,0,0]], COLOR_WHITE],
+    [14, "the salt", () => [[0,0,0,0],[0,0,0,0]], COLOR_WHITE],
+    [15, "the horseshoe", () => [[0,0,0,0],[0,0,0,0]], COLOR_BLACK],
+    [16, "it is 13th of", () => [[0,0,0,0],[0,0,0,0]], COLOR_BLACK],
+    [17, "you got mail", () => [[0,0,0,0],[0,0,0,0]], COLOR_BLACK],
+    [18, "during your travel", () => [[0,0,0,0],[0,0,0,0]], COLOR_WHITE],
+    [19, "the lucky coin", () => [[0,0,0,0],[0,0,0,0]], COLOR_WHITE],
+    [20, "your horoscope", () => [[0,0,0,0],[0,0,0,0]], COLOR_BLACK],
 ]

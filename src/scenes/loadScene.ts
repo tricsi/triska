@@ -7,7 +7,6 @@ import {
     off,
     on,
     setAlpha,
-    setScale,
     setText,
     removeChild,
     timer,
@@ -21,7 +20,32 @@ import {
 import { FONT } from "../config"
 import { initGame } from "./gameScene"
 
-const loadScene = createEntity(["loader", , [["text", { x: [FONT, "Click to start", 1] }]]])
+const loadScene = createEntity([
+    "loader", , [
+        ["title", { t:[,[0, -20], .7], x: [FONT, "Superstitious\nStory", 1, 1] }],
+        ["text", { t:[,[0, 20],.5], x: [FONT, "click to start", 1, 1] }]
+    ]
+])
+
+export function initLoad() {
+    on("down", onDown)
+    return loadScene
+}
+
+async function onDown() {
+    off("down", onDown)
+    setText(getChild(loadScene, "text"), "Loading...")
+
+    await audio()
+    await sound("tap", ["custom", 0.03, [1, 0]], 220)
+    //await loadMusic()
+
+    await timer(1, (t) => setAlpha(loadScene, 1 - t))
+
+    const parent = getParent(loadScene)
+    removeChild(parent, loadScene)
+    addChild(parent, initGame())
+}
 
 async function loadMusic() {
     const mid: TSoundProps = ["sawtooth", 0.3, [1, 0.5]]
@@ -40,31 +64,7 @@ async function loadMusic() {
         [cord, "8|4|8a2e3,4e3b3,2eb3bb3,2d3a3|12", 0.2],
         [chip, "1a1,1e2,1c2,1e2,1a1,1e2,1c2,1e2,1a1,1eb2,1b1,1eb2,1a1,1f2,1bb1,1f2|14", 0.2]
     ])
-    mixer("music", 0.1)
+    mixer("music", 0.05)
     play("theme", true, "music")
 }
 
-async function onDown() {
-    off("down", onDown)
-
-    const text = getChild(loadScene, "text")
-    setText(text, "Loading...")
-
-    await audio()
-    await sound("tap", ["custom", 0.03, [0.7, 0]], 110)
-    // await loadMusic()
-
-    await timer(1, (t) => {
-        setAlpha(loadScene, 1 - t)
-        setScale(text, 1 - t)
-    })
-
-    const parent = getParent(loadScene)
-    removeChild(parent, loadScene)
-    addChild(parent, initGame())
-}
-
-export function initLoad() {
-    on("down", onDown)
-    return loadScene
-}

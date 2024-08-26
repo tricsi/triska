@@ -7,24 +7,17 @@ export function createButton(
     color: number[] = COLOR_BLACK,
 ): TEntityProps[] {
     return [
-        [
-            "txt",
-            {
-                c: color,
-                t: [[7, 7]],
-                s: ["ico", 14, 14, 0, icon]
-            }
-        ],
-        [
-            "bg",
-            {
-                c: back,
-                t: [[8, 8]],
-                p: [[0, 0, 16, 16]]
-            }
-        ]
+        ["txt", {
+            c: color,
+            t: [[7, 7]],
+            s: ["ico", 14, 14, 0, icon]
+        }],
+        ["bg", {
+            c: back,
+            t: [[8, 8]],
+            p: [[0, 0, 16, 16]]
+        }]
     ]
 }
 
 export const isButtonActive = (entity: TEntity) => isHover(getChild(entity, "bg"))
-export const setButtonText = (entity: TEntity, value: string) => setText(getChild(entity, "txt"), value)

@@ -36,8 +36,8 @@ sm.createImages(files, (err, images) => {
         let [UX, UY] = data.frames[dot]
         let [UW, UH] = data.size 
         data.dot = [
-            Math.round((UX + 1) / UW * 100) / 100,
-            Math.round((UY + 1) / UH * 100) / 100
+            Math.round((UX + 1.5) / UW * 100) / 100,
+            Math.round((UY + 1.5) / UH * 100) / 100
         ]
     }
     fs.writeFileSync("./src/asset/texture.json", JSON.stringify(data))

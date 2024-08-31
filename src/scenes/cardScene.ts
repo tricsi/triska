@@ -23,13 +23,13 @@ export function initCard() {
     return cardScene
 }
 
-export function setCard(icon: number, text: string, config: () => TCardConfig, color: number[] = COLOR_BLACK) {
+export function setCard(icon: number,  text: string, config: () => TCardConfig, color: number[] = COLOR_BLACK, count?: number) {
     const [r, g, b] = color
     const grey = (r + g + b) / 3
     const bgColor = grey >= .5 ? COLOR_BLACK : COLOR_WHITE
     const txtColor = grey >= .5 ? COLOR_WHITE : COLOR_BLACK
     cardConfig = config()
-    setText(cardTxt, `${text}\n${cardConfig[2] || ""}`)
+    setText(cardTxt, [text, cardConfig[2]].join("\n"))
     setFrame(cardIcon, icon)
     setColor(cardIcon, color)
     setColor(cardBg, bgColor)

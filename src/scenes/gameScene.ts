@@ -8,10 +8,11 @@ import {
     play,
     setRotate,
 } from "../modules"
-import { CARDS, COLOR_BLACK } from "../config"
+import { COLOR_BLACK } from "../config"
 import { createButton, isButtonActive } from "../prefabs/button"
 import { foreshadowValues, initHud, addHudValues, setHudValues } from "./hudScene"
-import { hideCard, cardValues, initCard, setCard, showCard } from "./cardScene"
+import { hideCard, cardConfig, initCard, setCard, showCard } from "./cardScene"
+import { CARDS } from "../prefabs/cards"
 
 const gameScene: TEntity = createEntity([
     "game", , [
@@ -46,7 +47,7 @@ function onPointer() {
         setHudValues()
         return
     }
-    foreshadowValues(...cardValues[hover])
+    foreshadowValues(...cardConfig[hover] as number[])
     const angle = hover * 0.2 - 0.1
     setRotate(buttons[hover], angle)
 }
@@ -57,7 +58,7 @@ async function onUp([code]: TEvent<string>) {
         return
     }
     buttons.forEach((button) => setRotate(button, 0))
-    addHudValues(cardValues[hover], .5)
+    addHudValues(cardConfig[hover] as number[], .5)
     play("tap")
     isAnimate = true
     await hideCard(hover)

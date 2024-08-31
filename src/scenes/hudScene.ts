@@ -24,6 +24,10 @@ export async function foreshadowValues(...newValues: number[]) {
     })
 }
 
+export function getHudValues(): number[] {
+    return [...values]
+}
+
 export async function setHudValues(newValues: number [] = values) {
     copy(values, newValues)
     icons.forEach((icon, i) => {

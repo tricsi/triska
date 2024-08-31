@@ -10,9 +10,9 @@ import {
 } from "../modules"
 import { COLOR_BLACK } from "../config"
 import { createButton, isButtonActive } from "../prefabs/button"
-import { foreshadowValues, initHud, addHudValues, setHudValues } from "./hudScene"
+import { foreshadowValues, initHud, addHudValues, setHudValues, getHudValues } from "./hudScene"
 import { hideCard, cardConfig, initCard, setCard, showCard } from "./cardScene"
-import { drawCard } from "../logic"
+import { drawCard, isGameOver } from "../logic"
 
 const gameScene: TEntity = createEntity(["game", , [
     ["no", { t: [, [-15, 52]] }, createButton(0)],
@@ -60,7 +60,10 @@ async function onUp([code]: TEvent<string>) {
     play("tap")
     isAnimate = true
     await hideCard(hover)
-    setCard(...drawCard())
+    const values = getHudValues()
+    const result = isGameOver(values)
+    const card = drawCard()
+    setCard(...card)
     await showCard()
     isAnimate = false
 }

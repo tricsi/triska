@@ -1,5 +1,5 @@
 import { COLOR_BLACK, COLOR_GREY, COLOR_WHITE, FONT, ICO } from "../config";
-import { createEntity, getChild, PI, setAlpha, setColor, setFrame, setRotate, setText, setVisible, TEntity, timer } from "../modules";
+import { createEntity, getChild, irnd, PI, setAlpha, setColor, setFrame, setRotate, setText, setVisible, TEntity, timer } from "../modules";
 import { TCardConfig } from "../prefabs/cards";
 
 const cardScene: TEntity = createEntity([
@@ -23,12 +23,13 @@ export function initCard() {
     return cardScene
 }
 
-export function setCard(icon: number,  text: string, config: () => TCardConfig, color: number[] = COLOR_BLACK, count?: number) {
+export function setCard(icon: number,  text: string, config: () => TCardConfig[], color: number[] = COLOR_WHITE) {
     const [r, g, b] = color
     const grey = (r + g + b) / 3
     const bgColor = grey >= .5 ? COLOR_BLACK : COLOR_WHITE
     const txtColor = grey >= .5 ? COLOR_WHITE : COLOR_BLACK
-    cardConfig = config()
+    const cardConfigs = config()
+    cardConfig = cardConfigs[irnd(cardConfigs.length - 1)]
     setText(cardTxt, [text, cardConfig[2]].join("\n"))
     setFrame(cardIcon, icon)
     setColor(cardIcon, color)

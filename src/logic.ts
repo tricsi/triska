@@ -1,12 +1,11 @@
-import { COLOR_WHITE } from "./config";
-import { add, floor, max, min, random, round } from "./modules";
-import { PLAY_CARDS, TCard } from "./prefabs/cards";
+import { add, floor, irnd, max, min, random, round } from "./modules"
+import { PLAY_CARDS, TCard } from "./prefabs/cards"
 
 let cardDeck: TCard[] = []
 
 export function isGameOver(values: number[]): number {
     for (let i = 0; i < values.length; i++) {
-        const value = values[i];
+        const value = values[i]
         if (value <= 0 || value >= 10) {
             return i
         }
@@ -21,13 +20,8 @@ export function drawCard(): TCard {
     return card
 }
 
-function shuffleDeck() {
-    for (let i = 0; i < PLAY_CARDS.length; i++) {
-        const [ico, name, config, color = COLOR_WHITE, count = 1] = PLAY_CARDS[i]
-        for (let j = 0; j < count; j++) {
-            cardDeck.push([ico, name, config, color, count])
-        }
-    }
+export function shuffleDeck() {
+    cardDeck = [...PLAY_CARDS]
 }
 
 function debugLogic() {
@@ -39,11 +33,14 @@ function debugLogic() {
     let sumRound = 0
     for (let i = 0; i < runs; i++) {
         const values = [5, 5, 5, 5]
-        const [, , cardConfig] = drawCard()
         let result = -1
         let count = 0
+        shuffleDeck()
         do {
-            add(values, cardConfig()[round(random())] as number[])
+            const [, , cardConfig] = drawCard()
+            const configs = cardConfig()
+            const config = configs[irnd(configs.length - 1)]
+            add(values, config[irnd(1)] as number[])
             result = isGameOver(values)
             count++
         } while (result < 0)
@@ -52,9 +49,9 @@ function debugLogic() {
         maxRound = max(count, maxRound)
         values[result] <= 0 ? lose[result]++ : wins[result]++
     }
-    console.log("win..:", ...wins.map(value => round(value / runs * 100)))
-    console.log("lose.:", ...lose.map(value => round(value / runs * 100)))
-    console.log("round:", minRound, round(sumRound/runs) , maxRound)
+    console.log("win..:", ...wins.map((value) => round((value / runs) * 100)))
+    console.log("lose.:", ...lose.map((value) => round((value / runs) * 100)))
+    console.log("round:", minRound, round(sumRound / runs), maxRound)
 }
 
 debugLogic()

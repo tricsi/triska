@@ -12,6 +12,7 @@ import {
 } from "./cardScene"
 import { drawCard, getResultCard } from "../logic"
 import POINTER from "../modules/input/pointer"
+import { initParticle, startParticle } from "../prefabs/particle"
 
 const gameScene: TEntity = createEntity([
     "game",
@@ -29,8 +30,9 @@ export function initGame() {
     on("up", onUp)
     on("down", onDown)
     on("pointer", onPointer)
-    addChild(gameScene, initHud(), 0)
-    addChild(gameScene, initCard(), 1)
+    addChild(gameScene, initParticle(), 0)
+    addChild(gameScene, initHud(), 1)
+    addChild(gameScene, initCard(), 2)
     setCard(drawCard())
     return gameScene
 }
@@ -60,15 +62,19 @@ async function onUp() {
     const rotate: number = getCardRotete()
     if (rotate < 0) {
         setCardRotate(0)
-        setHudValues()
         return
     }
-
+    
     isAnimate = true
-    addHudValues(cardConfig[rotate] as number[], 0.5)
+    addHudValues(cardConfig[rotate] as number[])
     await hideCard(rotate)
     const values = getHudValues()
-    const card = getResultCard(values) || drawCard()
+    let card = getResultCard(values)
+    if (card) {
+        startParticle()
+    } else {
+        card = drawCard()
+    }
     setCard(card)
     await showCard()
     isAnimate = false

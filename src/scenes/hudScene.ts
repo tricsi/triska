@@ -36,6 +36,6 @@ export async function setHudValues(newValues: number [] = values) {
     })
 }
 
-export async function addHudValues(newValues: number [], time = 0) {
+export async function addHudValues(newValues: number []) {
     setHudValues(add(values, newValues))
 }

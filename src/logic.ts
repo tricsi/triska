@@ -1,5 +1,5 @@
 import { add, floor, irnd, max, min, random, round } from "./modules"
-import { PLAY_CARDS, TCard } from "./prefabs/cards"
+import { LOSE_CARDS, PLAY_CARDS, TCard, WIN_CARDS } from "./prefabs/cards"
 
 let cardDeck: TCard[] = []
 
@@ -11,6 +11,15 @@ export function isGameOver(values: number[]): number {
         }
     }
     return -1
+}
+
+export function getResultCard(values: number[]): TCard {
+    for (let i = 0; i < values.length; i++) {
+        const value = values[i]
+        if (value >= 10) return WIN_CARDS[i]
+        if (value <= 0) return LOSE_CARDS[i]
+    }
+    return null
 }
 
 export function drawCard(): TCard {

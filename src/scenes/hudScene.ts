@@ -1,11 +1,11 @@
-import { add, copy, createEntity, getChildren, setColor, TEntity, timer } from "../modules"
+import { add, copy, createEntity, getChildren, setColor, TEntity } from "../modules"
 
 const hudScene: TEntity = createEntity([
     "hud", { t: [, [0, -54]] }, [
-        ["luck", { s: ["ico", 14, 14, 0, 2], t: [[7, 7], [-26, 0]] }],
-        ["brain", { s: ["ico", 14, 14, 0, 3], t: [[7, 7], [-9, 0]] }],
-        ["money", { s: ["ico", 14, 14, 0, 4], t: [[7, 7], [9, 0]] }],
-        ["life", { s: ["ico", 14, 14, 0, 5], t: [[7, 7], [26, 0]] }]
+        ["luck", { s: ["ico", 14, 14, 0, 0], t: [[7, 7], [-26, 0]] }],
+        ["brain", { s: ["ico", 14, 14, 0, 1], t: [[7, 7], [-9, 0]] }],
+        ["money", { s: ["ico", 14, 14, 0, 2], t: [[7, 7], [9, 0]] }],
+        ["life", { s: ["ico", 14, 14, 0, 3], t: [[7, 7], [26, 0]] }]
     ]
 ])
 

@@ -1,69 +1,75 @@
-import {
-    TEntity,
-    TEvent,
-    addChild,
-    createEntity,
-    getChild,
-    on,
-    play,
-    setRotate
-} from "../modules"
+import { TEntity, addChild, createEntity, on, X } from "../modules"
 import { COLOR_BLACK } from "../config"
-import { createButton, isButtonActive } from "../prefabs/button"
 import { foreshadowValues, initHud, addHudValues, setHudValues, getHudValues } from "./hudScene"
-import { hideCard, cardConfig, initCard, setCard, showCard } from "./cardScene"
-import { drawCard, isGameOver } from "../logic"
+import {
+    hideCard,
+    cardConfig,
+    initCard,
+    setCard,
+    showCard,
+    setCardRotate,
+    getCardRotete
+} from "./cardScene"
+import { drawCard, getResultCard } from "../logic"
+import POINTER from "../modules/input/pointer"
 
-const gameScene: TEntity = createEntity(["game", , [
-    ["no", { t: [, [-15, 52]] }, createButton(0)],
-    ["ok", { t: [, [15, 52]] }, createButton(1)],
-    ["bg", { p: [[-36, -64, 72, 128]], c: COLOR_BLACK }]
-]])
+const gameScene: TEntity = createEntity([
+    "game",
+    ,
+    [
+        ["bg", { p: [[-36, -64, 72, 128]], c: COLOR_BLACK }]
+    ]
+])
 
-let buttons: TEntity[] = [getChild(gameScene, "no"), getChild(gameScene, "ok")]
-let hover: number
 let isAnimate: boolean
+let isDown: number = 0
+let startX: number = 0
 
 export function initGame() {
     on("up", onUp)
-    on("down", onPointer)
+    on("down", onDown)
     on("pointer", onPointer)
-    addChild(gameScene, initHud(), 2)
-    addChild(gameScene, initCard(), 3)
-    setCard(...drawCard())
+    addChild(gameScene, initHud(), 0)
+    addChild(gameScene, initCard(), 1)
+    setCard(drawCard())
     return gameScene
 }
 
-
-function onPointer() {
-    hover = buttons.reduce((value, button, index) => {
-        const isActive = !isAnimate && isButtonActive(button)
-        return isActive ? index : value
-    }, -1)
-    if (hover < 0) {
-        buttons.forEach((button) => setRotate(button, 0))
-        setHudValues()
-        return
-    }
-    foreshadowValues(...(cardConfig[hover] as number[]))
-    const angle = hover * 0.2 - 0.1
-    setRotate(buttons[hover], angle)
+function onDown() {
+    if (isAnimate) return
+    isDown = 1
+    startX = POINTER[X]
+    onPointer()
 }
 
-async function onUp([code]: TEvent<string>) {
-    if (code !== "Mouse0" || hover < 0 || isAnimate) {
+function onPointer() {
+    if (isDown) {
+        const rotate = (POINTER[X] - startX) / 300
+        setCardRotate(rotate)
+    }
+    const rotate: number = getCardRotete()
+    if (rotate < 0) {
         setHudValues()
         return
     }
-    buttons.forEach((button) => setRotate(button, 0))
-    addHudValues(cardConfig[hover] as number[], 0.5)
-    play("tap")
+    foreshadowValues(...(cardConfig[rotate] as number[]))
+}
+
+async function onUp() {
+    isDown = 0
+    const rotate: number = getCardRotete()
+    if (rotate < 0) {
+        setCardRotate(0)
+        setHudValues()
+        return
+    }
+
     isAnimate = true
-    await hideCard(hover)
+    addHudValues(cardConfig[rotate] as number[], 0.5)
+    await hideCard(rotate)
     const values = getHudValues()
-    const result = isGameOver(values)
-    const card = drawCard()
-    setCard(...card)
+    const card = getResultCard(values) || drawCard()
+    setCard(card)
     await showCard()
     isAnimate = false
 }

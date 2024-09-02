@@ -1,9 +1,10 @@
+import { TCard } from './../prefabs/cards';
 import { COLOR_BLACK, COLOR_GREY, COLOR_WHITE, FONT, ICO } from "../config";
-import { createEntity, getChild, irnd, PI, setAlpha, setColor, setFrame, setRotate, setText, setVisible, TEntity, timer } from "../modules";
+import { createEntity, getChild, getRotate, irnd, max, min, PI, setAlpha, setColor, setFrame, setRotate, setText, setVisible, TEntity, timer } from "../modules";
 import { TCardConfig } from "../prefabs/cards";
 
 const cardScene: TEntity = createEntity([
-    "card", { t: [[33, 128], [0, 84]]}, [
+    "card", { t: [[33, 128], [0, 86]]}, [
         ["ico", { t: [[7, 7], [33, 32], 2.5], s: ICO, c: COLOR_BLACK }],
         ["txt", { t: [, [33, 64], 0.5], x: [FONT, , 1, 1, 1, 2] }],
         ["no", { t: [, [2, 82], .4], x: [FONT, "no", 0, 2] }],
@@ -23,7 +24,7 @@ export function initCard() {
     return cardScene
 }
 
-export function setCard(icon: number,  text: string, config: () => TCardConfig[], color: number[] = COLOR_WHITE) {
+export function setCard([icon,  text, config, color = COLOR_WHITE]: TCard) {
     const [r, g, b] = color
     const grey = (r + g + b) / 3
     const bgColor = grey >= .5 ? COLOR_BLACK : COLOR_WHITE
@@ -41,9 +42,20 @@ export function setCard(icon: number,  text: string, config: () => TCardConfig[]
     })
 }
 
+export function getCardRotete(threshold: number = 0.3): number {
+    if (getRotate(cardScene) < -threshold) return 0
+    if (getRotate(cardScene) > threshold) return 1
+    return -1
+}
+
+export function setCardRotate(angle: number) {
+    setRotate(cardScene, min(max(angle, -1), 1))
+}
+
 export async function hideCard(direction: number) {
-    const angle = (direction - 0.5) * PI
-    await timer(0.4, (t) => setRotate(cardScene, t * t * angle))
+    const from = getRotate(cardScene)
+    const to = (direction - 0.5) * PI
+    await timer(0.4, (t) => setRotate(cardScene, t * t * (to - from) + from))
 }
 
 export async function showCard() {

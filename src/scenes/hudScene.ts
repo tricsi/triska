@@ -1,3 +1,4 @@
+import { FONT } from "../config"
 import { add, copy, createEntity, getChildren, setColor, TEntity } from "../modules"
 
 const hudScene: TEntity = createEntity([

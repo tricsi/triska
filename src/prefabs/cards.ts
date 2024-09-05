@@ -42,12 +42,12 @@ const kingOfClubs = (): TCardConfig[] => [
 
 const queenOfHearts = (): TCardConfig[] => [
     [[0, 0, 0, -2], [0, 0, 0, 2], "is in your hand", "fold", "raise"],
-    [[0, 0, 0, 1], [0, 0, 0, -1], "is on the table", "call", "raise"],
+    [[0, 0, 0, 1], [0, 0, 0, -1], "is on the table", "fold", "call"],
 ]
 
 const jackOfDiamonds = (): TCardConfig[] => [
     [[0, 0, -2, 0], [0, 0, 2, 0], "is in your hand", "fold", "raise"],
-    [[0, 0, 1, 0], [0, 0, -1, 0], "is on the table", "call", "raise"],
+    [[0, 0, 1, 0], [0, 0, -1, 0], "is on the table", "fold", "call"],
 ]
 
 const theSalt = (): TCardConfig[] => [
@@ -84,8 +84,16 @@ const horoscope = (): TCardConfig[] => [
     [[0, 0, 0, irnd(4) - 2], [0, 0, 0, irnd(4) - 2], "promise luck\nin love", "forget", "believe"],
 ]
 
+const tutorial = (): TCardConfig[] => [
+    [[0, 0, 0, 0], [0, 0, 0, 0], , "help", "play"],
+]
+
 const nothing = (): TCardConfig[] => [
     [[0, 0, 0, 0], [0, 0, 0, 0]],
+]
+
+export const INFO_CARDS: TCard[] = [
+    [19, "swipe\n\nleft or right", tutorial],
 ]
 
 export const PLAY_CARDS: TCard[] = [
@@ -108,15 +116,15 @@ export const PLAY_CARDS: TCard[] = [
 ]
 
 export const LOSE_CARDS: TCard[] = [
-    [0, "you are cursed", nothing, COLOR_BLACK],
-    [1, "lost your mind", nothing, COLOR_BLACK],
-    [2, "money goes", nothing, COLOR_BLACK],
-    [3, "bye my love", nothing, COLOR_BLACK]
+    [0, "you are cursed", nothing],
+    [1, "lost your mind", nothing],
+    [2, "money goes", nothing],
+    [3, "bye my love", nothing]
 ]
 
 export const WIN_CARDS: TCard[] = [
-    [2, "lucky bastard", nothing],
-    [3, "too real\nto be good", nothing],
-    [4, "richie rich\nis in your debt", nothing],
-    [5, "white wedding", nothing]
+    [2, "lucky bastard", nothing, COLOR_BLACK],
+    [3, "too real\nto be good", nothing, COLOR_BLACK],
+    [4, "richie rich\nis in your debt", nothing, COLOR_BLACK],
+    [5, "white wedding", nothing, COLOR_BLACK]
 ]

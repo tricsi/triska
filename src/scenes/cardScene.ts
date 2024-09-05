@@ -6,9 +6,9 @@ import { TCardConfig } from "../prefabs/cards";
 const cardScene: TEntity = createEntity([
     "card", { t: [[33, 128], [0, 86]]}, [
         ["ico", { t: [[7, 7], [33, 32], 2.5], s: ICO, c: COLOR_BLACK }],
-        ["txt", { t: [, [33, 64], 0.5], x: [FONT, , 1, 1, 1, 2] }],
-        ["no", { t: [, [2, 82], .4], x: [FONT, "no", 0, 2] }],
-        ["ok", { t: [, [64, 82], .4], x: [FONT, "ok", 2, 2] }],
+        ["txt", { t: [, [33, 66], 0.5], x: [FONT, , 1, 1, 1, 2] }],
+        ["no", { t: [, [64, 2], .4], x: [FONT, "no", 2] }],
+        ["ok", { t: [, [2, 2], .4], x: [FONT, "ok", 0] }],
         ["bg", { p: [[1, 1, 64, 82]] }],
         ["frame", { p: [[0, 0, 66, 84]], c: COLOR_GREY }]
     ]
@@ -17,6 +17,7 @@ const cardBg = getChild(cardScene, "bg")
 const cardTxt = getChild(cardScene, "txt")
 const cardIcon = getChild(cardScene, "ico")
 const cardHints = [getChild(cardScene, "no"), getChild(cardScene, "ok")]
+const HINT_ALPHA = 0.2
 
 export let cardConfig: TCardConfig
 
@@ -39,17 +40,21 @@ export function setCard([icon,  text, config, color = COLOR_WHITE]: TCard) {
     cardHints.forEach((hint, i) => {
         setText(hint, cardConfig[i + 3]  as string)
         setColor(hint, txtColor)
+        setAlpha(hint, HINT_ALPHA)
     })
 }
 
-export function getCardRotete(threshold: number = 0.3): number {
+export function getCardRotete(threshold: number = 0.1): number {
     if (getRotate(cardScene) < -threshold) return 0
     if (getRotate(cardScene) > threshold) return 1
     return -1
 }
 
 export function setCardRotate(angle: number) {
-    setRotate(cardScene, min(max(angle, -1), 1))
+    angle = min(max(angle, -1), 1)
+    setAlpha(cardHints[0], min(max(-angle * 4 + HINT_ALPHA, 0), 1))
+    setAlpha(cardHints[1], min(max(angle * 4 + HINT_ALPHA, 0), 1))
+    setRotate(cardScene, angle)
 }
 
 export async function hideCard(direction: number) {

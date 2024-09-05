@@ -1,7 +1,9 @@
 import { add, floor, irnd, max, min, random, round } from "./modules"
-import { LOSE_CARDS, PLAY_CARDS, TCard, WIN_CARDS } from "./prefabs/cards"
+import { INFO_CARDS, LOSE_CARDS, PLAY_CARDS, TCard, WIN_CARDS } from "./prefabs/cards"
 
-let cardDeck: TCard[] = []
+let cardDeck: TCard[] = [
+    ...INFO_CARDS
+]
 
 export function isGameOver(values: number[]): number {
     for (let i = 0; i < values.length; i++) {
@@ -24,13 +26,16 @@ export function getResultCard(values: number[]): TCard {
 
 export function drawCard(): TCard {
     if (!cardDeck.length) shuffleDeck()
-    const index = floor(random() * cardDeck.length)
-    const card = cardDeck.splice(index, 1)[0]
-    return card
+    return cardDeck.shift()
 }
 
 export function shuffleDeck() {
     cardDeck = [...PLAY_CARDS]
+    let idx = cardDeck.length;
+    while (idx > 0) {
+        let rand = floor(random() * idx--);
+        [cardDeck[idx], cardDeck[rand]] = [cardDeck[rand], cardDeck[idx]];
+    }
 }
 
 function debugLogic() {
@@ -63,4 +68,4 @@ function debugLogic() {
     console.log("round:", minRound, round(sumRound / runs), maxRound)
 }
 
-debugLogic()
+//debugLogic()

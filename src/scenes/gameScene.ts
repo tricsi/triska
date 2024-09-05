@@ -13,18 +13,17 @@ import {
 import { drawCard, getResultCard } from "../logic"
 import POINTER from "../modules/input/pointer"
 import { initParticle, startParticle } from "../prefabs/particle"
+import { initInfo, setDays } from "./infoScene"
+import { TCard } from "../prefabs/cards"
 
-const gameScene: TEntity = createEntity([
-    "game",
-    ,
-    [
-        ["bg", { p: [[-36, -64, 72, 128]], c: COLOR_BLACK }]
-    ]
-])
+const gameScene: TEntity = createEntity(["game", , [
+    ["bg", { p: [[-36, -64, 72, 128]], c: COLOR_BLACK }]
+]])
 
-let isAnimate: boolean
-let isDown: number = 0
-let startX: number = 0
+let isAnimate: boolean,
+    isEnded: boolean = true,
+    isDown: number = 0,
+    startX: number = 0
 
 export function initGame() {
     on("up", onUp)
@@ -32,7 +31,8 @@ export function initGame() {
     on("pointer", onPointer)
     addChild(gameScene, initParticle(), 0)
     addChild(gameScene, initHud(), 1)
-    addChild(gameScene, initCard(), 2)
+    addChild(gameScene, initInfo(), 2)
+    addChild(gameScene, initCard(), 3)
     setCard(drawCard())
     return gameScene
 }
@@ -69,13 +69,21 @@ async function onUp() {
     addHudValues(cardConfig[rotate] as number[])
     await hideCard(rotate)
     const values = getHudValues()
-    let card = getResultCard(values)
-    if (card) {
+    let result
+    if (isEnded) {
+        setDays(0)
+        setHudValues([5, 5, 5, 5])
+    } else {
+        result = getResultCard(values)
+    }
+    isEnded = !!result
+    if (isEnded) {
         startParticle()
     } else {
-        card = drawCard()
+        setDays()
+        result = drawCard()
     }
-    setCard(card)
+    setCard(result)
     await showCard()
     isAnimate = false
 }

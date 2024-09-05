@@ -1,5 +1,4 @@
-import { FONT } from "../config"
-import { add, copy, createEntity, getChildren, setColor, TEntity } from "../modules"
+import { abs, add, copy, createEntity, getChildren, setColor, setScale, TEntity, timer } from "../modules"
 
 const hudScene: TEntity = createEntity([
     "hud", { t: [, [0, -54]] }, [
@@ -18,18 +17,14 @@ export function initHud() {
     return hudScene
 }
 
-export async function foreshadowValues(...newValues: number[]) {
+export function foreshadowValues(...newValues: number[]) {
     icons.forEach((icon, i) => {
         const color = (values[i] + newValues[i]) / 10
         setColor(icon, [color, color, color])
     })
 }
 
-export function getHudValues(): number[] {
-    return [...values]
-}
-
-export async function setHudValues(newValues: number [] = values) {
+export function setHudValues(newValues: number [] = values) {
     copy(values, newValues)
     icons.forEach((icon, i) => {
         let color = values[i] / 10
@@ -37,6 +32,14 @@ export async function setHudValues(newValues: number [] = values) {
     })
 }
 
-export async function addHudValues(newValues: number []) {
+export function addHudValues(newValues: number []): number[] {
+    icons.forEach((icon, i) => {
+        if (!newValues[i]) return
+        timer(0.3, t => {
+            const tt = 1.1 - abs(t * t * 0.1)
+            setScale(icon,  tt)
+        })
+    })
     setHudValues(add(values, newValues))
+    return [...values]
 }

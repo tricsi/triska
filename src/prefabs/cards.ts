@@ -123,8 +123,8 @@ export const LOSE_CARDS: TCard[] = [
 ]
 
 export const WIN_CARDS: TCard[] = [
-    [2, "lucky bastard", nothing, COLOR_BLACK],
-    [3, "too real\nto be good", nothing, COLOR_BLACK],
-    [4, "richie rich\nis in your debt", nothing, COLOR_BLACK],
-    [5, "white wedding", nothing, COLOR_BLACK]
+    [0, "lucky bastard", nothing, COLOR_BLACK],
+    [1, "too real\nto be good", nothing, COLOR_BLACK],
+    [2, "richie rich\nis in your debt", nothing, COLOR_BLACK],
+    [3, "white wedding", nothing, COLOR_BLACK]
 ]

@@ -1,6 +1,6 @@
 import { TEntity, addChild, createEntity, on, X } from "../modules"
 import { COLOR_BLACK } from "../config"
-import { foreshadowValues, initHud, addHudValues, setHudValues, getHudValues } from "./hudScene"
+import { foreshadowValues, initHud, addHudValues, setHudValues } from "./hudScene"
 import {
     hideCard,
     cardConfig,
@@ -14,7 +14,6 @@ import { drawCard, getResultCard } from "../logic"
 import POINTER from "../modules/input/pointer"
 import { initParticle, startParticle } from "../prefabs/particle"
 import { initInfo, setDays } from "./infoScene"
-import { TCard } from "../prefabs/cards"
 
 const gameScene: TEntity = createEntity(["game", , [
     ["bg", { p: [[-36, -64, 72, 128]], c: COLOR_BLACK }]
@@ -66,14 +65,13 @@ async function onUp() {
     }
     
     isAnimate = true
-    addHudValues(cardConfig[rotate] as number[])
     await hideCard(rotate)
-    const values = getHudValues()
     let result
     if (isEnded) {
         setDays(0)
         setHudValues([5, 5, 5, 5])
     } else {
+        const values = addHudValues(cardConfig[rotate] as number[])
         result = getResultCard(values)
     }
     isEnded = !!result

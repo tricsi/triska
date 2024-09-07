@@ -1,6 +1,6 @@
 import { TCard } from './../prefabs/cards';
 import { COLOR_BLACK, COLOR_GREY, COLOR_WHITE, FONT, ICO } from "../config";
-import { createEntity, getChild, getRotate, irnd, max, min, PI, setAlpha, setColor, setFrame, setRotate, setText, setVisible, TEntity, timer } from "../modules";
+import { createEntity, getChild, getRotate, irnd, isHover, max, min, PI, setAlpha, setColor, setFrame, setRotate, setText, TEntity, timer } from "../modules";
 import { TCardConfig } from "../prefabs/cards";
 
 const cardScene: TEntity = createEntity([
@@ -17,7 +17,9 @@ const cardBg = getChild(cardScene, "bg")
 const cardTxt = getChild(cardScene, "txt")
 const cardIcon = getChild(cardScene, "ico")
 const cardHints = [getChild(cardScene, "no"), getChild(cardScene, "ok")]
-const HINT_ALPHA = 0.2
+const HINT_ALPHA = 0
+
+export const isCardHover = () => isHover(getChild(cardScene, "bg"))
 
 export let cardConfig: TCardConfig
 

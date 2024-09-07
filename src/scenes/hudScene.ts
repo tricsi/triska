@@ -19,8 +19,7 @@ export function initHud() {
 
 export function foreshadowValues(...newValues: number[]) {
     icons.forEach((icon, i) => {
-        const color = (values[i] + newValues[i]) / 10
-        setColor(icon, [color, color, color])
+        setScale(icon, newValues[i] ? 1.2 : 1)
     })
 }
 
@@ -29,17 +28,11 @@ export function setHudValues(newValues: number [] = values) {
     icons.forEach((icon, i) => {
         let color = values[i] / 10
         setColor(icon, [color, color, color])
+        setScale(icon, 1)
     })
 }
 
 export function addHudValues(newValues: number []): number[] {
-    icons.forEach((icon, i) => {
-        if (!newValues[i]) return
-        timer(0.3, t => {
-            const tt = 1.1 - abs(t * t * 0.1)
-            setScale(icon,  tt)
-        })
-    })
     setHudValues(add(values, newValues))
     return [...values]
 }

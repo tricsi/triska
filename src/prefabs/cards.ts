@@ -32,26 +32,26 @@ const moneyToad = (): TCardConfig[] =>[
 
 const aceOfSpades = (): TCardConfig[] => [
     [[2, 0, 0, 0], [-2, 0, 0, 0], "is in your hand", "fold", "raise"],
-    [[-1, 0, 0, 0], [1, 0, 0, 0], "is on the table", "call", "raise"],
+    [[1, 0, 0, 0], [-1, 0, 0, 0], "is on the table", "fold", "call"],
 ]
 
 const kingOfClubs = (): TCardConfig[] => [
     [[0, -2, 0, 0], [0, 2, 0, 0], "is in your hand", "fold", "raise"],
-    [[0, 1, 0, 0], [0, -1, 0, 0], "is on the table", "call", "raise"],
+    [[0, -1, 0, 0], [0, 1, 0, 0], "is on the table", "fold", "call"],
 ]
 
 const queenOfHearts = (): TCardConfig[] => [
     [[0, 0, 0, -2], [0, 0, 0, 2], "is in your hand", "fold", "raise"],
-    [[0, 0, 0, 1], [0, 0, 0, -1], "is on the table", "fold", "call"],
+    [[0, 0, 0, -1], [0, 0, 0, 1], "is on the table", "fold", "call"],
 ]
 
 const jackOfDiamonds = (): TCardConfig[] => [
     [[0, 0, -2, 0], [0, 0, 2, 0], "is in your hand", "fold", "raise"],
-    [[0, 0, 1, 0], [0, 0, -1, 0], "is on the table", "fold", "call"],
+    [[0, 0, -1, 0], [0, 0, 1, 0], "is on the table", "fold", "call"],
 ]
 
 const theSalt = (): TCardConfig[] => [
-    [[0, 1, 0, 1], [0, -1, 0, -1], "spill out", "clean", "geather"],
+    [[0, 1, 0, 1], [0, -1, 0, -1], "spill out", "clean", "leave"],
 ]
 
 const horseshoe = (): TCardConfig[] => [

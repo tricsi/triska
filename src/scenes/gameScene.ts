@@ -8,7 +8,8 @@ import {
     setCard,
     showCard,
     setCardRotate,
-    getCardRotete
+    getCardRotete,
+    isCardHover
 } from "./cardScene"
 import { drawCard, getResultCard } from "../logic"
 import POINTER from "../modules/input/pointer"
@@ -37,7 +38,7 @@ export function initGame() {
 }
 
 function onDown() {
-    if (isAnimate) return
+    if (isAnimate || !isCardHover()) return
     isDown = 1
     startX = POINTER[X]
     onPointer()

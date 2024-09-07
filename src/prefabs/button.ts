@@ -1,4 +1,4 @@
-import { TEntity, TEntityProps, getChild, isHover, setText } from "../modules"
+import { TEntity, TEntityProps, getChild, isHover } from "../modules"
 import { COLOR_BLACK, COLOR_WHITE } from "../config"
 
 export function createButton(

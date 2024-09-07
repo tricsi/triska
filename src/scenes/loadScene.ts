@@ -11,25 +11,34 @@ import {
     removeChild,
     timer,
     sound,
-    play,
     TSoundProps,
     wave,
-    music,
-    mixer
+    music
 } from "../modules"
 import { FONT } from "../config"
 import { initGame } from "./gameScene"
 
 const loadScene = createEntity([
     "loader", , [
-        ["title", { t:[,[0, -20], .7], x: [FONT, "Superstitious\nStory", 1, 1] }],
+        ["title", { t:[,[0, -20], .7], x: [FONT, , 1, 1] }],
         ["text", { t:[,[0, 20],.5], x: [FONT, "click to start", 1, 1] }]
     ]
 ])
 
+const titleStr = "Superstitious\nStory"
+const title = getChild(loadScene, "title")
+const text = getChild(loadScene, "text")
+
 export function initLoad() {
-    on("down", onDown)
+    intro()
     return loadScene
+}
+
+async function intro() {
+    setAlpha(text, 0)
+    await timer(0.12, (t, i) => t || setText(title, titleStr.substring(0, i + 1)), titleStr.length)
+    on("down", onDown)   
+    await timer(0.3, t => setAlpha(text, t))
 }
 
 async function onDown() {
@@ -37,8 +46,9 @@ async function onDown() {
     setText(getChild(loadScene, "text"), "Loading...")
 
     await audio()
-    await sound("tap", ["custom", 0.03, [1, 0]], 220)
-    //await loadMusic()
+    await sound("swipe", ["custom", 0.2, [0, 0.5, 0]], [110, 220, 110])
+    await sound("end", ["custom", 2.5, [0, 0.5, 0.2, 0]], 440)
+    await loadMusic()
 
     await timer(1, (t) => setAlpha(loadScene, 1 - t))
 
@@ -48,23 +58,15 @@ async function onDown() {
 }
 
 async function loadMusic() {
-    const mid: TSoundProps = ["sawtooth", 0.3, [1, 0.5]]
-    const chip: TSoundProps = [
-        wave((n) => (4 / (n * Math.PI)) * Math.sin(Math.PI * n * 0.18)),
-        0.3,
-        [1, 0.3]
-    ]
-    const cord: TSoundProps = [[1, 1, 1, 1, 0, 1, 0, 1, 0, 0, 0, 1], 0.3, [0.5, 1, 0.5]]
+    const drum: TSoundProps = ["custom", 0.5, [4, 0]]
+    const bass: TSoundProps = ["sawtooth", 0.3, [1, 0.1]]
+    const chip: TSoundProps = [wave((n) => (4 / (n * Math.PI)) * Math.sin(Math.PI * n * 0.18)), 0.3, [1, 0.3, 0.1]]
+    const cord: TSoundProps = [[1, 1, 1, 1, 0, 1, 0, 1, 0, 0, 0, 1], 0.3, [0.1, 0.5, 0.1]]
     await music("theme", [
-        [
-            mid,
-            "8|8|12e4e3,1gb4gb3,1,1gb4gb3,1,12e4e3,4|2|4e4,2g4,1e4,1g4,4gb4,4f4,4e4,2g4,1e4,1g4,1gb4,1,1gb4,1,4f4|2|12e4e3,1gb4gb3,1,1gb4gb3,1,12e4e3,4",
-            0.2
-        ],
-        [cord, "8|4|8a2e3,4e3b3,2eb3bb3,2d3a3|12", 0.2],
-        [chip, "1a1,1e2,1c2,1e2,1a1,1e2,1c2,1e2,1a1,1eb2,1b1,1eb2,1a1,1f2,1bb1,1f2|14", 0.2]
+        [drum, "1e3,3,1e3,3|4|1e3,1,1e4,1,1e3,1,1e4,1|12", 0.4],
+        [bass, "32|1|1e1,1c2,1e2,5g2,1b1,1e2,1g2,5b2,1c2,1e2,1g2,5c3,1e1,1b1,1e2,5g2|3", 0.4],
+        [cord, "8e2c3e3g3,8b2e3g3b3,8c3e3g3c4,8e2b2e3g3|4", 0.4],
+        [chip, "64,8e3,1e3,1d3,1b2,4,1g2,7a2,1g2,7b2,1e2,8e3,1e3,1d3,1b2,4,1g2,7a2,1g2,8e2", 0.4]
     ])
-    mixer("music", 0.05)
-    play("theme", true, "music")
 }
 

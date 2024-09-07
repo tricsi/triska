@@ -1,6 +1,6 @@
 import { TCard } from './../prefabs/cards';
 import { COLOR_BLACK, COLOR_GREY, COLOR_WHITE, FONT, ICO } from "../config";
-import { createEntity, getChild, getRotate, irnd, isHover, max, min, PI, setAlpha, setColor, setFrame, setRotate, setText, TEntity, timer } from "../modules";
+import { createEntity, getChild, getRotate, irnd, isHover, max, min, PI, play, setAlpha, setColor, setFrame, setRotate, setText, TEntity, timer } from "../modules";
 import { TCardConfig } from "../prefabs/cards";
 
 const cardScene: TEntity = createEntity([
@@ -62,6 +62,7 @@ export function setCardRotate(angle: number) {
 export async function hideCard(direction: number) {
     const from = getRotate(cardScene)
     const to = (direction - 0.5) * PI
+    play("swipe")
     await timer(0.4, (t) => setRotate(cardScene, t * t * (to - from) + from))
 }
 

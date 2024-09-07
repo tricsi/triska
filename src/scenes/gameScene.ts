@@ -1,4 +1,4 @@
-import { TEntity, addChild, createEntity, on, X } from "../modules"
+import { TEntity, addChild, createEntity, on, X, play, mixer, timer, setAlpha } from "../modules"
 import { COLOR_BLACK } from "../config"
 import { foreshadowValues, initHud, addHudValues, setHudValues } from "./hudScene"
 import {
@@ -21,20 +21,31 @@ const gameScene: TEntity = createEntity(["game", , [
 ]])
 
 let isAnimate: boolean,
+    musicSrc: AudioBufferSourceNode,
     isEnded: boolean = true,
     isDown: number = 0,
     startX: number = 0
 
 export function initGame() {
-    on("up", onUp)
-    on("down", onDown)
-    on("pointer", onPointer)
     addChild(gameScene, initParticle(), 0)
     addChild(gameScene, initHud(), 1)
     addChild(gameScene, initInfo(), 2)
     addChild(gameScene, initCard(), 3)
     setCard(drawCard())
+    intro()
     return gameScene
+}
+
+async function intro() {
+    await timer(0.5, t => setAlpha(gameScene, t))
+    await timer(0.5, t => setCardRotate(t * t / 10))
+    await timer(0.5)
+    await timer(0.5, t => setCardRotate(0.1 - (t * t / 5)))
+    await timer(0.5)
+    await timer(0.5, t => setCardRotate((t * t / 10) - 0.1))
+    on("up", onUp)
+    on("down", onDown)
+    on("pointer", onPointer)
 }
 
 function onDown() {
@@ -65,6 +76,11 @@ async function onUp() {
         return
     }
     
+    if (!musicSrc) {
+        mixer("music", 0.1)
+        musicSrc = play("theme", true, "music")
+    }
+
     isAnimate = true
     await hideCard(rotate)
     let result
@@ -76,8 +92,16 @@ async function onUp() {
         result = getResultCard(values)
     }
     isEnded = !!result
+
     if (isEnded) {
+        play("end")
         startParticle()
+        timer(0.3, (t) => {
+            mixer("music", (1 - t) * 0.1)
+        }).then(() => {
+            musicSrc.stop()
+            musicSrc = null
+        })
     } else {
         setDays()
         result = drawCard()

@@ -2,7 +2,7 @@ import { FONT } from "../config"
 import { createEntity, getChild, setText } from "../modules"
 
 const infoScene = createEntity(["info", {t: [, [0, 49]]}, [
-    ["days", { x: [FONT, , 1] }]]
+    ["days", { x: [FONT, "wake up", 1] }]]
 ])
 const days = getChild(infoScene, "days")
 

@@ -1,14 +1,14 @@
 import { TCard } from './../prefabs/cards';
 import { COLOR_BLACK, COLOR_GREY, COLOR_WHITE, FONT, ICO } from "../config";
-import { createEntity, getChild, getRotate, irnd, isHover, max, min, PI, play, setAlpha, setColor, setFrame, setRotate, setText, TEntity, timer } from "../modules";
+import { abs, createEntity, getChild, getRotate, irnd, isHover, max, min, PI, play, setAlpha, setColor, setFrame, setRotate, setScale, setText, TEntity, timer } from "../modules";
 import { TCardConfig } from "../prefabs/cards";
 
 const cardScene: TEntity = createEntity([
     "card", { t: [[33, 128], [0, 86]]}, [
         ["ico", { t: [[7, 7], [33, 32], 2.5], s: ICO, c: COLOR_BLACK }],
         ["txt", { t: [, [33, 66], 0.5], x: [FONT, , 1, 1, 1, 2] }],
-        ["no", { t: [, [64, 2], .4], x: [FONT, "no", 2] }],
-        ["ok", { t: [, [2, 2], .4], x: [FONT, "ok", 0] }],
+        ["no", { t: [, [64, 2], .5], x: [FONT, "no", 2] }],
+        ["ok", { t: [, [2, 2], .5], x: [FONT, "ok", 0] }],
         ["bg", { p: [[1, 1, 64, 82]] }],
         ["frame", { p: [[0, 0, 66, 84]], c: COLOR_GREY }]
     ]
@@ -50,6 +50,10 @@ export function getCardRotete(threshold: number = 0.1): number {
     if (getRotate(cardScene) < -threshold) return 0
     if (getRotate(cardScene) > threshold) return 1
     return -1
+}
+
+export async function highlightHint(idx: number) {
+    await timer(0.5, t => setScale(cardHints[idx], min(1 - abs(t - 0.5), 0.7)))
 }
 
 export function setCardRotate(angle: number) {

@@ -9,7 +9,8 @@ import {
     showCard,
     setCardRotate,
     getCardRotete,
-    isCardHover
+    isCardHover,
+    highlightHint
 } from "./cardScene"
 import { drawCard, getResultCard } from "../logic"
 import POINTER from "../modules/input/pointer"
@@ -38,11 +39,11 @@ export function initGame() {
 
 async function intro() {
     await timer(0.5, t => setAlpha(gameScene, t))
-    await timer(0.5, t => setCardRotate(t * t / 10))
-    await timer(0.5)
-    await timer(0.5, t => setCardRotate(0.1 - (t * t / 5)))
-    await timer(0.5)
-    await timer(0.5, t => setCardRotate((t * t / 10) - 0.1))
+    await timer(0.5, t => setCardRotate(t * t / 5))
+    await highlightHint(1)
+    await timer(.7, t => setCardRotate(0.2 - (t * t / 2.5)))
+    await highlightHint(0)
+    await timer(0.5, t => setCardRotate((t * t / 5) - 0.2))
     on("up", onUp)
     on("down", onDown)
     on("pointer", onPointer)

@@ -1,3 +1,4 @@
+import { MOBILE } from './../modules/utils';
 import {
     audio,
     addChild,
@@ -16,7 +17,8 @@ import {
     music,
     TTimerProp,
     DOC,
-    mixer
+    mixer,
+    fullscreen
 } from "../modules"
 import { FONT } from "../config"
 import { initGame } from "./gameScene"
@@ -32,6 +34,7 @@ const titleStr = "Superstitious\nStory"
 const title = getChild(loadScene, "title")
 const text = getChild(loadScene, "text")
 const introProps: TTimerProp = [1, 0]
+const fs = async () => MOBILE && fullscreen()
 
 export function initLoad() {
     intro()
@@ -40,7 +43,7 @@ export function initLoad() {
 
 async function intro() {
     setAlpha(text, 0)
-    on("up", onClick)   
+    on("up", onClick)
     await timer(0.12, (t, i) => t || setText(title, titleStr.substring(0, i + 1)), titleStr.length, introProps)
     setText(title, titleStr)
     await timer(0.3, t => setAlpha(text, t), 1, introProps)
@@ -52,7 +55,9 @@ async function onClick() {
     setText(getChild(loadScene, "text"), "Loading...")
 
     await audio()
-    on("visibilitychange", () => mixer("master", DOC.hidden ? 0 : 1))
+    await fs()
+    on("up", fs)
+    on("visibilitychange", () => mixer("master", DOC.hidden ? 0 : 1), DOC)
     await sound("swipe", ["custom", 0.2, [0, 0.5, 0]], [110, 220, 110])
     await sound("end", ["custom", 2.5, [0, 0.5, 0.2, 0]], 440)
     await loadMusic()

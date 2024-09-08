@@ -1,5 +1,5 @@
 import { FONT } from "../config"
-import { createEntity, getChild, setText, storage } from "../modules"
+import { createEntity, getChild, setText, session } from "../modules"
 
 const infoScene = createEntity(["info", {t: [, [0, 49]]}, [
     ["days", { x: [FONT, "wake up", 1] }]]
@@ -18,7 +18,7 @@ export function setInfoText(text: string) {
 
 export function setDays(value: number = daysNum + 1) {
     setInfoText(value ? "day " + value : "")
-    storage("day", value)
+    session("day", value)
     daysNum = value
 }
 

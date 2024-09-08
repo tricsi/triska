@@ -92,8 +92,8 @@ async function onUp() {
     }
     
     if (!musicSrc) {
+        mixer("music", 0.1, mixer("master"))
         musicSrc = play("theme", true, "music")
-        musicSrc && mixer("music", 0.1)
     }
 
     isAnimate = true

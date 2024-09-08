@@ -123,7 +123,7 @@ const tutorial = (end = 0): () => TCardConfig[] => () => [
 
 export const INFO_CARDS: TCard[] = [
     [19, "swipe\nleft or right", tutorial()],
-    [[0, 1, 2, 3], "balance the\naspects of life\n\nluck, mind, money\nand love", tutorial()],
+    [[0, 1, 2, 3], "balance the\naspects of life\n\nluck, wisdom,\nmoney and love", tutorial()],
     [23, "avoid light\nand darkness", tutorial(), COLOR_BLACK],
     [14, "survive all\ngood and bad days", tutorial()],
     [0, "good luck!", tutorial(1), COLOR_BLACK],

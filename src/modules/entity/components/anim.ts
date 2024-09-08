@@ -1,9 +1,11 @@
-import { TEntity, FACTORIES, getComponents } from "../entity"
+import { TEntity, FACTORIES, getComponents, getParam, setParam } from "../entity"
 import { floor, min } from "../../math"
 import { setFrame } from "./sprite"
 
 /** AnimProps [track, loop, speed] */
 type TAnimProp = [number, number?, number?]
+
+const NAME = "a"
 
 FACTORIES.a = (
     tracks: number[] | number[][],
@@ -26,6 +28,8 @@ export const playAnim = (
         if (reset) a[5] = 0
     }
 }
+
+export const setTracks = (entity: TEntity, value: number[] | number[][]) => setParam(entity, NAME, 0, value)
 
 export const stopAnim = (entity: TEntity, reset = true) => playAnim(entity, [0], reset)
 

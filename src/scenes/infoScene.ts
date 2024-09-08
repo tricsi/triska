@@ -17,7 +17,7 @@ export function setInfoText(text: string) {
 }
 
 export function setDays(value: number = daysNum + 1) {
-    setInfoText("day " + value)
+    setInfoText(value ? "day " + value : "")
     storage("day", value)
     daysNum = value
 }

@@ -13,7 +13,10 @@ import {
     sound,
     TSoundProps,
     wave,
-    music
+    music,
+    TTimerProp,
+    DOC,
+    mixer
 } from "../modules"
 import { FONT } from "../config"
 import { initGame } from "./gameScene"
@@ -28,6 +31,7 @@ const loadScene = createEntity([
 const titleStr = "Superstitious\nStory"
 const title = getChild(loadScene, "title")
 const text = getChild(loadScene, "text")
+const introProps: TTimerProp = [1, 0]
 
 export function initLoad() {
     intro()
@@ -36,20 +40,22 @@ export function initLoad() {
 
 async function intro() {
     setAlpha(text, 0)
-    await timer(0.12, (t, i) => t || setText(title, titleStr.substring(0, i + 1)), titleStr.length)
     on("up", onClick)   
-    await timer(0.3, t => setAlpha(text, t))
+    await timer(0.12, (t, i) => t || setText(title, titleStr.substring(0, i + 1)), titleStr.length, introProps)
+    setText(title, titleStr)
+    await timer(0.3, t => setAlpha(text, t), 1, introProps)
 }
 
 async function onClick() {
     off("up", onClick)
+    introProps[1] = 1
     setText(getChild(loadScene, "text"), "Loading...")
 
     await audio()
+    on("visibilitychange", () => mixer("master", DOC.hidden ? 0 : 1))
     await sound("swipe", ["custom", 0.2, [0, 0.5, 0]], [110, 220, 110])
     await sound("end", ["custom", 2.5, [0, 0.5, 0.2, 0]], 440)
     await loadMusic()
-
     await timer(1, (t) => setAlpha(loadScene, 1 - t))
 
     const parent = getParent(loadScene)
@@ -59,7 +65,7 @@ async function onClick() {
 
 async function loadMusic() {
     const drum: TSoundProps = ["custom", 0.5, [4, 0]]
-    const bass: TSoundProps = ["sawtooth", 0.3, [1, 0.1]]
+    const bass: TSoundProps = ["sawtooth", 0.3, [.7, 0.1]]
     const chip: TSoundProps = [wave((n) => (4 / (n * Math.PI)) * Math.sin(Math.PI * n * 0.18)), 0.3, [1, 0.3, 0.1]]
     const cord: TSoundProps = [[1, 1, 1, 1, 0, 1, 0, 1, 0, 0, 0, 1], 0.3, [0.1, 0.5, 0.1]]
     await music("theme", [

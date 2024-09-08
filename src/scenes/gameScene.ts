@@ -9,10 +9,9 @@ import {
     showCard,
     setCardRotate,
     getCardRotete,
-    isCardHover,
-    highlightHint
+    isCardHover
 } from "./cardScene"
-import { drawCard, getResultCard } from "../logic"
+import { drawCard, getResultCard, shuffleDeck } from "../logic"
 import POINTER from "../modules/input/pointer"
 import { initParticle, startParticle } from "../prefabs/particle"
 import { initInfo, setDays, setInfoText } from "./infoScene"
@@ -22,10 +21,11 @@ const gameScene: TEntity = createEntity(["game", , [
 ]])
 
 let isAnimate: boolean,
-    musicSrc: AudioBufferSourceNode,
+    isTutorial: boolean = true,
     isEnded: boolean = true,
     isDown: number = 0,
-    startX: number = 0
+    startX: number = 0,
+    musicSrc: AudioBufferSourceNode
 
 export function initGame() {
     addChild(gameScene, initParticle(), 0)
@@ -38,12 +38,12 @@ export function initGame() {
 }
 
 async function intro() {
-    await timer(0.5, t => setAlpha(gameScene, t))
-    await timer(0.5, t => setCardRotate(t * t / 5))
-    await highlightHint(1)
-    await timer(.7, t => setCardRotate(0.2 - (t * t / 2.5)))
-    await highlightHint(0)
-    await timer(0.5, t => setCardRotate((t * t / 5) - 0.2))
+    await timer(0.3, t => setAlpha(gameScene, t))
+    await timer(0.3, t => setCardRotate(t * t / 5))
+    await timer(0.5)
+    await timer(0.6, t => setCardRotate(0.2 - (t * t / 2.5)))
+    await timer(0.5)
+    await timer(0.3, t => setCardRotate((t * t / 5) - 0.2))
     on("up", onUp)
     on("down", onDown)
     on("pointer", onPointer)
@@ -69,6 +69,20 @@ function onPointer() {
     foreshadowValues(...(cardConfig[rotate] as number[]))
 }
 
+function gameOver() {
+    play("end")
+    setInfoText("")
+    startParticle()
+    if (musicSrc) {
+        timer(0.3, (t) => {
+            mixer("music", (1 - t) * 0.1)
+        }).then(() => {
+            musicSrc.stop()
+            musicSrc = null
+        })
+    }
+}
+
 async function onUp() {
     isDown = 0
     const rotate: number = getCardRotete()
@@ -84,6 +98,10 @@ async function onUp() {
 
     isAnimate = true
     await hideCard(rotate)
+    if (isTutorial && rotate > 0) {
+        isTutorial = false
+        shuffleDeck()
+    }
     let result
     if (isEnded) {
         setDays(0)
@@ -95,20 +113,10 @@ async function onUp() {
     isEnded = !!result
 
     if (isEnded) {
-        play("end")
-        setInfoText("")
-        startParticle()
-        if (musicSrc) {
-            timer(0.3, (t) => {
-                mixer("music", (1 - t) * 0.1)
-            }).then(() => {
-                musicSrc.stop()
-                musicSrc = null
-            })
-        }
+        gameOver()
     } else {
-        setDays()
-        result = drawCard()
+        result = drawCard(() => isTutorial = false)
+        isTutorial || setDays()
     }
     setCard(result)
     await showCard()

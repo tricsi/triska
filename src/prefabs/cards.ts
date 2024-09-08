@@ -2,7 +2,7 @@ import { COLOR_BLACK } from "../config"
 import { irnd, storage } from "../modules"
 
 export type TCardConfig = [number[], number[], string?, string?, string?]
-export type TCard = [number, string, () => TCardConfig[], number[]?]
+export type TCard = [number|number[], string, () => TCardConfig[], number[]?]
 
 const fourLeafClover = (): TCardConfig[] => [
     [[-2, 0, 0, 0], [2, 0, 0, 0], "is at your feet", "leave", "pick"],
@@ -11,7 +11,7 @@ const fourLeafClover = (): TCardConfig[] => [
 
 const blackCat = (): TCardConfig[] =>[
     [[-1, 0, 0, -1], [2, 0, 0, 1], "wants to be your\nfriend", "leave", "pet"],
-    [[0, -1, 0, 0], [-2, 0, 0, 0], "crosses the road", "turn back", "go on"]
+    [[0, -1, 0, 0], [-2, 0, 0, 0], "crosses the road", "turn\nback", "go on"]
 ]
 
 const whiteRabbit = (): TCardConfig[] =>[
@@ -21,8 +21,8 @@ const whiteRabbit = (): TCardConfig[] =>[
 
 const fullMoon = (): TCardConfig[] => [
     [[0, 2, 0, -1], [0, 1, 0, 2], "rising", "observe", "wonder"],
-    [[0, 1, 1, 0], [0, -1, -1, 0], "wakes you up", "sleep", "stay awake"],
-    [[0, -1, 0, -1], [0, 0, 0, 2], "rising at noon", "be careful", "be brave"],
+    [[0, 1, 1, 0], [0, -1, -1, 0], "wakes you up", "sleep", "awake"],
+    [[0, -1, 0, -1], [0, 0, 0, 2], "rising at noon", "careful", "brave"],
 ]
 
 const moneyToad = (): TCardConfig[] =>[
@@ -51,7 +51,7 @@ const jackOfDiamonds = (): TCardConfig[] => [
 ]
 
 const theSalt = (): TCardConfig[] => [
-    [[0, 1, 0, 1], [0, -1, 0, -1], "spill out", "clean", "leave"],
+    [[0, 1, 0, 1], [0, -1, 0, -1], "spilled out", "clean", "leave"],
 ]
 
 const horseshoe = (): TCardConfig[] => [
@@ -61,11 +61,11 @@ const horseshoe = (): TCardConfig[] => [
 const thirteen = (): TCardConfig[] => [
     [[0, -1, 0, 0], [-1, 0, 0, 0], [
         "january", "februray", "marc", "april", "may", "june", "july", "august", "september", "october", "november", "december"
-    ][irnd(11)], "stay in bed", "never mind"],
+    ][irnd(11)], "stay in\nbed", "never\nmind"],
 ]
 
 const youGotMail = (): TCardConfig[] => [
-    [[0, 2, 1, 0], [0, 0, -1, 0], "from a nigerian noble\nwho makes you rich", "spam", "send money"],
+    [[0, 2, 1, 0], [0, 0, -1, 0], "from a noble heir\nwho makes you rich", "spam", "send money"],
     [[0, 2, 2, 0], [0, 0, -2, 0], "from your bank to\nchange password", "keep", "change"],
     [[0, 2, 0, 0], [0, -1, 0, 0], "from your friend\nto forward 100 times", "hoax", "forward"],
 ]
@@ -76,10 +76,10 @@ const travel = (): TCardConfig[] => [
 ]
 
 const luckyCoin = (): TCardConfig[] => [
-    [[irnd(2), 0, 0, 0], [irnd(2), 0, 0, 0], "give you luck", "heads", "tails"],
-    [[0, irnd(2), 0, 0], [0, irnd(2), 0, 0], "give you wisdom", "heads", "tails"],
-    [[0, 0, irnd(2), 0], [0, 0, irnd(2), 0], "give you money", "heads", "tails"],
-    [[0, 0, 0, irnd(2)], [0, 0, 0, irnd(2)], "give you love", "heads", "tails"],
+    [[irnd(2), 0, 0, 0], [irnd(2), 0, 0, 0], "can give you\nluck", "heads", "tails"],
+    [[0, irnd(2), 0, 0], [0, irnd(2), 0, 0], "can give you\nwisdom", "heads", "tails"],
+    [[0, 0, irnd(2), 0], [0, 0, irnd(2), 0], "can give you\nmoney", "heads", "tails"],
+    [[0, 0, 0, irnd(2)], [0, 0, 0, irnd(2)], "can give you\nlove", "heads", "tails"],
 ]
 
 const horoscope = (): TCardConfig[] => [
@@ -108,20 +108,25 @@ const luckyDice = (): TCardConfig[] => [
     [[0, 0, 0, 0], [2, 2, 2, 2], "roll six", "hmm", "yeah"],
 ]
 
-const tutorial = (): TCardConfig[] => [
-    [[0, 0, 0, 0], [0, 0, 0, 0], , "help", "play"],
+const balanceSign = (): TCardConfig[] => [
+    [[0, 1, 0, 0], [0, 1, 0, 0], "calls you", "deny", "agree"],
+    [[0, 0, 0, 0], [0, -2, 0, 0], "is in danger", "afk", "act"],
+    [[0, 2, 0, 0], [0, 0, 0, 2], "help you", "understand", "feel"],
+]
+const onDayNumber = (): TCardConfig[] => [
+    [[0, 0, 0, 0], [0, 0, 0, 0], "on day " + storage("day"), "play", "play"]
 ]
 
-export const onDayNumber = (): TCardConfig[] => [
-    [[0, 0, 0, 0], [0, 0, 0, 0], "on day " + (storage("day"))]
-]
-
-const nothing = (): TCardConfig[] => [
-    [[0, 0, 0, 0], [0, 0, 0, 0]],
+const tutorial = (end = 0): () => TCardConfig[] => () => [
+    [[0, 0, 0, 0], [0, 0, 0, 0], ,end ? "play" : "help", "play"],
 ]
 
 export const INFO_CARDS: TCard[] = [
-    [19, "swipe\n\nleft or right", tutorial],
+    [19, "swipe\nleft or right", tutorial()],
+    [[0, 1, 2, 3], "balance the\naspects of life", tutorial()],
+    [23, "avoid light\nand darkness", tutorial(), COLOR_BLACK],
+    [14, "survive all good\nand bad days", tutorial()],
+    [0, "good luck!", tutorial(1), COLOR_BLACK],
 ]
 
 export const PLAY_CARDS: TCard[] = [
@@ -143,7 +148,8 @@ export const PLAY_CARDS: TCard[] = [
     [18, "your horoscope", horoscope, COLOR_BLACK],
     [20, "the fortune teller", fortuneTeller],
     [21, "the tarot cards", tarotCards],
-    [22, "your lucky dice", luckyDice]
+    [22, "your lucky dice", luckyDice],
+    [23, "the balance", balanceSign]
 ]
 
 export const LOSE_CARDS: TCard[] = [

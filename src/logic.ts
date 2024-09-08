@@ -24,8 +24,11 @@ export function getResultCard(values: number[]): TCard {
     return null
 }
 
-export function drawCard(): TCard {
-    if (!cardDeck.length) shuffleDeck()
+export function drawCard(onShuffle?: () => void): TCard {
+    if (!cardDeck.length) {
+        shuffleDeck()
+        onShuffle?.()
+    }
     return cardDeck.shift()
 }
 

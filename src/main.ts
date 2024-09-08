@@ -20,7 +20,7 @@ import {
 import TEXTURE from "./asset/texture.png"
 import SPRITESHEET from "./asset/texture.json"
 import { CENTER } from "./config"
-import { initGame } from "./scenes/gameScene"
+import { initLoad } from "./scenes/loadScene"
 
 const ROOT = createEntity(["root", { t: [, CENTER] }])
 
@@ -45,6 +45,6 @@ schedule((delta) => {
 }, 9)
 
 createContext($<HTMLCanvasElement>("canvas"), TEXTURE, SPRITESHEET, () => {
-    addChild(ROOT, initGame())
+    addChild(ROOT, initLoad())
     update()
 })

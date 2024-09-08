@@ -15,7 +15,7 @@ import {
 import { drawCard, getResultCard } from "../logic"
 import POINTER from "../modules/input/pointer"
 import { initParticle, startParticle } from "../prefabs/particle"
-import { initInfo, setDays } from "./infoScene"
+import { initInfo, setDays, setInfoText } from "./infoScene"
 
 const gameScene: TEntity = createEntity(["game", , [
     ["bg", { p: [[-36, -64, 72, 128]], c: COLOR_BLACK }]
@@ -78,8 +78,8 @@ async function onUp() {
     }
     
     if (!musicSrc) {
-        mixer("music", 0.1)
         musicSrc = play("theme", true, "music")
+        musicSrc && mixer("music", 0.1)
     }
 
     isAnimate = true
@@ -96,13 +96,16 @@ async function onUp() {
 
     if (isEnded) {
         play("end")
+        setInfoText("")
         startParticle()
-        timer(0.3, (t) => {
-            mixer("music", (1 - t) * 0.1)
-        }).then(() => {
-            musicSrc.stop()
-            musicSrc = null
-        })
+        if (musicSrc) {
+            timer(0.3, (t) => {
+                mixer("music", (1 - t) * 0.1)
+            }).then(() => {
+                musicSrc.stop()
+                musicSrc = null
+            })
+        }
     } else {
         setDays()
         result = drawCard()

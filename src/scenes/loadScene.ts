@@ -37,12 +37,12 @@ export function initLoad() {
 async function intro() {
     setAlpha(text, 0)
     await timer(0.12, (t, i) => t || setText(title, titleStr.substring(0, i + 1)), titleStr.length)
-    on("down", onDown)   
+    on("up", onClick)   
     await timer(0.3, t => setAlpha(text, t))
 }
 
-async function onDown() {
-    off("down", onDown)
+async function onClick() {
+    off("up", onClick)
     setText(getChild(loadScene, "text"), "Loading...")
 
     await audio()

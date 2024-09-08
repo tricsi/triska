@@ -1,5 +1,5 @@
 import { COLOR_BLACK } from "../config"
-import { irnd } from "../modules"
+import { irnd, storage } from "../modules"
 
 export type TCardConfig = [number[], number[], string?, string?, string?]
 export type TCard = [number, string, () => TCardConfig[], number[]?]
@@ -21,7 +21,7 @@ const whiteRabbit = (): TCardConfig[] =>[
 
 const fullMoon = (): TCardConfig[] => [
     [[0, 2, 0, -1], [0, 1, 0, 2], "rising", "observe", "wonder"],
-    [[0, 0, 1, 0], [0, -1, -1, 0], "wakes you up", "sleep", "stay awake"],
+    [[0, 1, 1, 0], [0, -1, -1, 0], "wakes you up", "sleep", "stay awake"],
     [[0, -1, 0, -1], [0, 0, 0, 2], "rising at noon", "be careful", "be brave"],
 ]
 
@@ -65,9 +65,9 @@ const thirteen = (): TCardConfig[] => [
 ]
 
 const youGotMail = (): TCardConfig[] => [
-    [[0, 2, 1, 0], [0, 0, -1, 0], "from a nigerian noble\nwho makes you rich", "trash", "send money"],
+    [[0, 2, 1, 0], [0, 0, -1, 0], "from a nigerian noble\nwho makes you rich", "spam", "send money"],
     [[0, 2, 2, 0], [0, 0, -2, 0], "from your bank to\nchange password", "keep", "change"],
-    [[0, 2, 0, 0], [0, -1, 0, 0], "from your friend\nto wish you luck", "reply", "forward"],
+    [[0, 2, 0, 0], [0, -1, 0, 0], "from your friend\nto forward 100 times", "hoax", "forward"],
 ]
 
 const travel = (): TCardConfig[] => [
@@ -76,16 +76,44 @@ const travel = (): TCardConfig[] => [
 ]
 
 const luckyCoin = (): TCardConfig[] => [
-    [[0, 0, irnd(4) - 3, 0], [0, 0, irnd(4) - 3, 0], "give you a fortune", "heads", "tails"],
+    [[irnd(2), 0, 0, 0], [irnd(2), 0, 0, 0], "give you luck", "heads", "tails"],
+    [[0, irnd(2), 0, 0], [0, irnd(2), 0, 0], "give you wisdom", "heads", "tails"],
+    [[0, 0, irnd(2), 0], [0, 0, irnd(2), 0], "give you money", "heads", "tails"],
+    [[0, 0, 0, irnd(2)], [0, 0, 0, irnd(2)], "give you love", "heads", "tails"],
 ]
 
 const horoscope = (): TCardConfig[] => [
-    [[0, 0, irnd(4) - 2, 0], [0, 0, irnd(4) - 2, 0], "promise luck\nin business", "forget", "believe"],
-    [[0, 0, 0, irnd(4) - 2], [0, 0, 0, irnd(4) - 2], "promise luck\nin love", "forget", "believe"],
+    [[irnd(4) - 2, 1, 0, 0], [irnd(4) - 2, -1, 0, 0], "promise luck\nin life", "forget", "believe"],
+    [[0, 1, irnd(4) - 2, 0], [0, -1, irnd(4) - 2, 0], "promise luck\nin business", "forget", "believe"],
+    [[0, 1, 0, irnd(4) - 2], [0, -1, 0, irnd(4) - 2], "promise luck\nin love", "forget", "believe"],
+]
+
+const fortuneTeller = (): TCardConfig[] => [
+    [[0, 1, 0, 1], [-1, -1, 0, 0], "see bad omens", "forget", "believe"],
+    [[0, -1, 0, 0], [2, 0, 0, 1], "see luck and fame", "pfff", "yeah"],
+]
+
+const tarotCards = (): TCardConfig[] => [
+    [[0, -1, 0, 0], [0, 1, 0, 0], "reveal a stranger", "fear", "curious"],
+    [[0, -2, 0, 0], [2, 0, 0, 1], "show certain death", "aaargh", "nonsense"],
+    [[0, 0, 0, -1], [0, 0, 0, 1], "promise love", "why", "lovely"],
+]
+
+const luckyDice = (): TCardConfig[] => [
+    [[0, 0, 0, 0], [-2, -2, -2, -2], "roll one", "hmm", "oh no"],
+    [[0, 0, 0, 0], [-1, -1, -1, -1], "roll two", "hmm", "shit"],
+    [[0, 0, 0, 0], [0, 0, 0, 0], "roll three", "hmm", "ok"],
+    [[0, 0, 0, 0], [0, 0, 0, 0], "roll four", "hmm", "ok"],
+    [[0, 0, 0, 0], [1, 1, 1, 1], "roll five", "hmm", "great"],
+    [[0, 0, 0, 0], [2, 2, 2, 2], "roll six", "hmm", "yeah"],
 ]
 
 const tutorial = (): TCardConfig[] => [
     [[0, 0, 0, 0], [0, 0, 0, 0], , "help", "play"],
+]
+
+export const onDayNumber = (): TCardConfig[] => [
+    [[0, 0, 0, 0], [0, 0, 0, 0], "on day " + (storage("day"))]
 ]
 
 const nothing = (): TCardConfig[] => [
@@ -112,19 +140,22 @@ export const PLAY_CARDS: TCard[] = [
     [15, "you got mail", youGotMail, COLOR_BLACK],
     [16, "during your travel", travel],
     [17, "the lucky coin", luckyCoin],
-    [18, "your horoscope", horoscope, COLOR_BLACK]
+    [18, "your horoscope", horoscope, COLOR_BLACK],
+    [20, "the fortune teller", fortuneTeller],
+    [21, "the tarot cards", tarotCards],
+    [22, "your lucky dice", luckyDice]
 ]
 
 export const LOSE_CARDS: TCard[] = [
-    [0, "you are cursed", nothing],
-    [1, "lost your mind", nothing],
-    [2, "money goes", nothing],
-    [3, "bye my love", nothing]
+    [0, "you feel cursed", onDayNumber],
+    [1, "lost your mind", onDayNumber],
+    [2, "all money gone", onDayNumber],
+    [3, "you broke up", onDayNumber]
 ]
 
 export const WIN_CARDS: TCard[] = [
-    [0, "lucky bastard", nothing, COLOR_BLACK],
-    [1, "too real\nto be good", nothing, COLOR_BLACK],
-    [2, "richie rich\nis in your debt", nothing, COLOR_BLACK],
-    [3, "white wedding", nothing, COLOR_BLACK]
+    [0, "won the lottery", onDayNumber, COLOR_BLACK],
+    [1, "got rid of\ntriskaidekaphobia", onDayNumber, COLOR_BLACK],
+    [2, "retired", onDayNumber, COLOR_BLACK],
+    [3, "got married", onDayNumber, COLOR_BLACK]
 ]

@@ -1,4 +1,4 @@
-import { TEntity, addChild, createEntity, on, X, play, mixer, timer, setAlpha } from "../modules"
+import { TEntity, addChild, createEntity, on, X, play, mixer, timer, setAlpha, emit } from "../modules"
 import { COLOR_BLACK } from "../config"
 import { foreshadowValues, initHud, addHudValues, setHudValues } from "./hudScene"
 import {
@@ -8,8 +8,7 @@ import {
     setCard,
     showCard,
     setCardRotate,
-    getCardRotete,
-    isCardHover
+    getCardRotete
 } from "./cardScene"
 import { drawCard, getResultCard, shuffleDeck } from "../logic"
 import POINTER from "../modules/input/pointer"
@@ -50,7 +49,7 @@ async function intro() {
 }
 
 function onDown() {
-    if (isAnimate || !isCardHover()) return
+    if (isAnimate) return
     isDown = 1
     startX = POINTER[X]
     onPointer()
@@ -100,6 +99,7 @@ async function onUp() {
     await hideCard(rotate)
     if (isTutorial && rotate > 0) {
         isTutorial = false
+        emit("help", 0)
         shuffleDeck()
     }
     let result

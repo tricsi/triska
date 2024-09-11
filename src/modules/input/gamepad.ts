@@ -1,9 +1,9 @@
 import input from "."
 import { emit } from "../event"
-import { abs } from "../math";
+import { abs } from "../math"
 import { schedule } from "../scheduler"
 
-const THRESHOLD = 0.02;
+const THRESHOLD = 0.02
 
 schedule(() => {
     const [gamepad] = navigator.getGamepads()

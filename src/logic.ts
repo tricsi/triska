@@ -1,9 +1,7 @@
 import { add, floor, irnd, max, min, random, round } from "./modules"
 import { INFO_CARDS, LOSE_CARDS, PLAY_CARDS, TCard, WIN_CARDS } from "./prefabs/cards"
 
-let cardDeck: TCard[] = [
-    ...INFO_CARDS
-]
+let cardDeck: TCard[] = [...INFO_CARDS]
 
 export function isGameOver(values: number[]): number {
     for (let i = 0; i < values.length; i++) {

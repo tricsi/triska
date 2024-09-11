@@ -1,8 +1,10 @@
 import { FONT } from "../config"
-import { createEntity, getChild, setText, session } from "../modules"
+import { createEntity, getChild, setText, session, storage } from "../modules"
+
+let hiScore = storage("score")
 
 const infoScene = createEntity(["info", {t: [, [0, 49]]}, [
-    ["days", { x: [FONT, "wake up", 1] }]]
+    ["days", { x: [FONT, hiScore ? "hi: " + hiScore : "", 1] }]]
 ])
 const days = getChild(infoScene, "days")
 
@@ -20,8 +22,4 @@ export function setDays(value: number = daysNum + 1) {
     setInfoText(value ? "day " + value : "")
     session("day", value)
     daysNum = value
-}
-
-export function getDays(): number {
-    return daysNum
 }

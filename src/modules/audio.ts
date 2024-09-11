@@ -1,4 +1,4 @@
-import { max, pow, random, round } from "./math"
+import { max, min, pow, random, round } from "./math"
 
 /** [WaveType, Length, Curve] */
 export type TSoundProps = [OscillatorType | number[], number, number | number[]]
@@ -149,15 +149,15 @@ export async function music(id: string, params: TChannelProps[]) {
     await ctx.startRendering()
 }
 
-export function mixer(id: string, volume = -1, destination: AudioNode = CONTEXT.destination): GainNode {
+export function mixer(id: string, volume = -1, destination: AudioNode = CONTEXT?.destination): GainNode {
     let mixer = MIXERS.get(id)
-    if (!mixer) {
+    if (!mixer && destination) {
         mixer = CONTEXT.createGain()
         mixer.connect(destination)
         MIXERS.set(id, mixer)
     }
-    if (volume >= 0 && volume <= 1) {
-        mixer.gain.value = volume
+    if (mixer && volume >= 0) {
+        mixer.gain.value = min(volume, 1)
     }
     return mixer
 }

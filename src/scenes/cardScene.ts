@@ -1,17 +1,17 @@
-import { TCard } from './../prefabs/cards';
-import { COLOR_BLACK, COLOR_GREY, COLOR_LIGHT, COLOR_WHITE, FONT, ICO } from "../config";
-import { createEntity, getChild, getRotate, irnd, isHover, max, min, PI, play, playAnim, setAlpha, setColor, setFrame, setRotate, setScale, setText, setTracks, stopAnim, TEntity, timer } from "../modules";
-import { TCardConfig } from "../prefabs/cards";
+import { TCard } from './../prefabs/cards'
+import { COLOR_BLACK, COLOR_GREY, COLOR_LIGHT, FONT, ICO } from "../config"
+import { createEntity, getChild, getRotate, irnd, isHover, max, min, PI, play, setAlpha, setColor, setFrame, setRotate, setScale, setText, TEntity, timer } from "../modules"
+import { TCardConfig } from "../prefabs/cards"
 
-const HINT_ALPHA = 0
+const HINT_ALPHA = 1
 const HINT_SCALE = 0.5
 
 const cardScene: TEntity = createEntity([
     "card", { t: [[33, 128], [0, 86]]}, [
-        ["ico", { t: [[7, 7], [33, 32], 2.5], s: ICO, a: [[0]], c: COLOR_BLACK }],
+        ["ico", { t: [[7, 7], [33, 32], 2.5], s: ICO, c: COLOR_BLACK }],
         ["txt", { t: [, [33, 68], 0.5], x: [FONT, , 1, 1, 1, 2] }],
-        ["no", { t: [, [64, 2], HINT_SCALE], x: [FONT, "no", 2] }],
-        ["ok", { t: [, [2, 2], HINT_SCALE], x: [FONT, "ok", 0] }],
+        ["ok", { t: [, [64, 2], HINT_SCALE], x: [FONT, "ok", 2] }],
+        ["no", { t: [, [2, 2], HINT_SCALE], x: [FONT, "no", 0] }],
         ["bg", { p: [[1, 1, 64, 82]] }],
         ["frame", { p: [[0, 0, 66, 84]], c: COLOR_GREY }]
     ]
@@ -35,11 +35,9 @@ export function setCard([icons,  text, config, color = COLOR_LIGHT]: TCard) {
     const bgColor = grey >= .5 ? COLOR_BLACK : COLOR_LIGHT
     const txtColor = grey >= .5 ? COLOR_LIGHT : COLOR_BLACK
     const cardConfigs = config()
-    const isAnimate = typeof icons !== "number"
     cardConfig = cardConfigs[irnd(cardConfigs.length - 1)]
     setText(cardTxt, [text, cardConfig[2]].join("\n"))
-    setTracks(cardIcon,  isAnimate ? [...icons] : [icons])
-    isAnimate ? playAnim(cardIcon, [0, 0, 1]) : stopAnim(cardIcon)
+    setFrame(cardIcon,  icons)
     setColor(cardIcon, color)
     setColor(cardBg, bgColor)
     setColor(cardTxt,txtColor)
@@ -57,14 +55,7 @@ export function getCardRotete(threshold: number = 0.1): number {
 }
 
 export function setCardRotate(angle: number) {
-    let cardAngle = min(max(angle, -1), 1),
-        yesAlpha = min(max(angle * 4 + HINT_ALPHA, 0), 1),
-        noAlpha = min(max(-cardAngle * 4 + HINT_ALPHA, 0), 1)
-    setAlpha(cardHints[0], noAlpha)
-    setAlpha(cardHints[1], yesAlpha)
-    setScale(cardHints[0], min(max(noAlpha, HINT_SCALE), 0.8))
-    setScale(cardHints[1], min(max(yesAlpha, HINT_SCALE), 0.8))
-    setRotate(cardScene, angle)
+    setRotate(cardScene, min(max(angle, -1), 1))
 }
 
 export async function hideCard(direction: number) {

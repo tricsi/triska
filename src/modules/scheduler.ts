@@ -3,8 +3,8 @@ import { DOC } from "./utils"
 
 export type TTask = (delta: number) => void
 
-/** TTimerProp [scale, stop] */
-export type TTimerProp = [number, number?]
+/** TTimerProp [scale, skip] */
+export type TTimerToken = [number, number?, TTask?]
 
 /** TTaskData [Callback, Weight, FPS, Time] */
 type TTaskData = [TTask, number, number, number]
@@ -59,29 +59,34 @@ export function timer(
     sec: number,
     update?: (t: number, i: number) => void,
     loop: number = 0,
-    prop: TTimerProp = [1]
+    token: TTimerToken = [1]
 ): Promise<void> {
     return new Promise<void>((resolve) => {
         let time = sec
         let index = 0
-        const callback = (delta: number) => {
-            const [scale, stop] = prop
+        token[2] = (delta: number) => {
+            const [scale, skip] = token
             time -= delta * scale
             while (time <= 0 && index < loop - 1) {
                 time += sec
                 update?.(0, ++index)
             }
-            if (time <= 0 || stop) {
-                unschedule(callback)
+            if (time <= 0 || skip) {
+                unschedule(token[2])
                 update?.(1, index)
                 resolve()
             } else {
                 update?.(1 - time / sec, index)
             }
         }
-        schedule(callback, 0, SCHEDULER.fps)
-        callback(0)
+        schedule(token[2], 0, SCHEDULER.fps)
+        token[2](0)
     })
+}
+
+export function kill(props: TTimerToken, force = false) {
+    props[1] = 1
+    force && unschedule(props[2])
 }
 
 on("visibilitychange", () => DOC.hidden || reset(), DOC)

@@ -47,7 +47,7 @@ for (let i = 0; i < 10; i++) T_VECTORS.push([0, 0])
 
 export function createPolygon(p: number[], mat?: Float32Array): IPolygon | number[] {
     if (p.length === 3) {
-        return [...p, ...p];
+        return [...p, ...p]
     }
     if (p.length === 4) {
         const [x, y, w, h] = p

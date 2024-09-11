@@ -15,7 +15,7 @@ import {
     TSoundProps,
     wave,
     music,
-    TTimerProp,
+    TTimerToken,
     DOC,
     mixer,
     fullscreen
@@ -33,7 +33,7 @@ const loadScene = createEntity([
 const titleStr = "Superstitious\nStory"
 const title = getChild(loadScene, "title")
 const text = getChild(loadScene, "text")
-const introProps: TTimerProp = [1, 0]
+const introProps: TTimerToken = [1, 0]
 const fs = async () => MOBILE && fullscreen()
 
 export function initLoad() {

@@ -117,7 +117,7 @@ export function addChild(entity: TEntity, child: TEntity, index: number = entity
 
 export function traverse(entity: TEntity, before?: (entity: TEntity) => any, after?: (entity: TEntity) => void) {
     if (isDisabled(entity)) {
-        return;
+        return
     }
     before?.(entity)
     const children = [...getChildren(entity)]

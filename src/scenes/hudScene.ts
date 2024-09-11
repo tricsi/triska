@@ -1,4 +1,4 @@
-import { abs, add, copy, createEntity, getChildren, setColor, setScale, TEntity, timer } from "../modules"
+import { add, copy, createEntity, getChildren, kill, on, PI, setColor, setScale, sin, TEntity, TEvent, timer, TTimerToken } from "../modules"
 
 const hudScene: TEntity = createEntity([
     "hud", { t: [, [0, -54]] }, [
@@ -11,10 +11,33 @@ const hudScene: TEntity = createEntity([
 
 let icons: TEntity[] = getChildren(hudScene)
 let values: number[] = [5, 5, 5, 5]
+let token: TTimerToken
 
 export function initHud() {
     setHudValues()
+    on("help", ([page]: TEvent<number>) => intro(page))
     return hudScene
+}
+
+async function intro(page: number) {
+    setHudValues()
+    token && kill(token)
+    switch (page) {
+        case 1:
+            token = [1, 0]
+            await timer(0.5, (t, i) => {
+                const tt = 1 - t * t;
+                setScale(icons[i % icons.length], tt * 0.2 + 1)
+            }, 8, token)
+            break
+        case 2:
+            token = [1, 0]
+            await timer(1, (t) => {
+                const tt = sin(PI * 2 * t) / 2 + 0.5;
+                icons.forEach(icon => setColor(icon, [tt, tt, tt]))
+            }, 2, token)
+            break
+        }
 }
 
 export function foreshadowValues(...newValues: number[]) {

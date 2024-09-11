@@ -1,8 +1,8 @@
 import { COLOR_BLACK } from "../config"
-import { irnd, session } from "../modules"
+import { emit, irnd, session } from "../modules"
 
 export type TCardConfig = [number[], number[], string?, string?, string?]
-export type TCard = [number|number[], string, () => TCardConfig[], number[]?]
+export type TCard = [number, string, () => TCardConfig[], number[]?]
 
 const fourLeafClover = (): TCardConfig[] => [
     [[-2, 0, 0, 0], [2, 0, 0, 0], "is at your feet", "leave", "pick"],
@@ -114,19 +114,21 @@ const balanceSign = (): TCardConfig[] => [
     [[0, 2, 0, 0], [0, 0, 0, 2], "help you", "understand", "feel"],
 ]
 const onDayNumber = (): TCardConfig[] => [
-    [[0, 0, 0, 0], [0, 0, 0, 0], "on day " + session("day"), "again", "play"]
+    [[0, 0, 0, 0], [0, 0, 0, 0], "on day " + session("day"), "play", "again"]
 ]
 
-const tutorial = (end = 0): () => TCardConfig[] => () => [
-    [[0, 0, 0, 0], [0, 0, 0, 0], ,end ? "play" : "help", "play"],
-]
+const tutorial = (page: number, end = 0): () => TCardConfig[] => () => {
+    emit("help", page)
+    return [
+        [[0, 0, 0, 0], [0, 0, 0, 0], ,end ? "play" : "help", "play"],
+    ]
+}
 
 export const INFO_CARDS: TCard[] = [
-    [19, "swipe\nleft or right", tutorial()],
-    [[0, 1, 2, 3], "balance the\naspects of life\n\nluck, wisdom,\nmoney and love", tutorial()],
-    [23, "avoid light\nand darkness", tutorial(), COLOR_BLACK],
-    [14, "survive all\ngood and bad days", tutorial()],
-    [0, "good luck!", tutorial(1), COLOR_BLACK],
+    [19, "swipe slowly\nleft or right\nto select your\naction", tutorial(0)],
+    [23, "balance the\naspects of life\nluck, wisdom,\nmoney and life", tutorial(1)],
+    [23, "do not let them\nfade or shine", tutorial(2), COLOR_BLACK],
+    [14, "survive as long\nas you can\n\ngood luck!", tutorial(3, 1)],
 ]
 
 export const PLAY_CARDS: TCard[] = [

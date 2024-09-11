@@ -13,7 +13,7 @@ import {
 import { drawCard, getResultCard, shuffleDeck } from "../logic"
 import POINTER from "../modules/input/pointer"
 import { initParticle, startParticle } from "../prefabs/particle"
-import { initInfo, setDays, setInfoText } from "./infoScene"
+import { initInfo, setDays, setResultInfo } from "./infoScene"
 
 const gameScene: TEntity = createEntity(["game", , [
     ["bg", { p: [[-36, -64, 72, 128]], c: COLOR_BLACK }]
@@ -70,7 +70,7 @@ function onPointer() {
 
 function gameOver() {
     play("end")
-    setInfoText("")
+    setResultInfo()
     startParticle()
     if (musicSrc) {
         timer(0.3, (t) => {

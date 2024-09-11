@@ -28,14 +28,14 @@ async function intro(page: number) {
             await timer(0.5, (t, i) => {
                 const tt = 1 - t * t;
                 setScale(icons[i % icons.length], tt * 0.2 + 1)
-            }, 8, token)
+            }, 12, token)
             break
         case 2:
             token = [1, 0]
             await timer(1, (t) => {
                 const tt = sin(PI * 2 * t) / 2 + 0.5;
                 icons.forEach(icon => setColor(icon, [tt, tt, tt]))
-            }, 2, token)
+            }, 3, token)
             break
         }
 }

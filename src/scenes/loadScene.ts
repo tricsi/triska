@@ -34,7 +34,6 @@ const titleStr = "Superstitious\nStory"
 const title = getChild(loadScene, "title")
 const text = getChild(loadScene, "text")
 const introProps: TTimerToken = [1, 0]
-const fs = async () => MOBILE && fullscreen()
 
 export function initLoad() {
     intro()
@@ -55,8 +54,6 @@ async function onClick() {
     setText(getChild(loadScene, "text"), "Loading...")
 
     await audio()
-    await fs()
-    on("up", fs)
     on("visibilitychange", () => mixer("master", DOC.hidden ? 0 : 1), DOC)
     await sound("swipe", ["custom", 0.2, [0, 0.5, 0]], [110, 220, 110])
     await sound("end", ["custom", 2.5, [0, 0.5, 0.2, 0]], 440)
